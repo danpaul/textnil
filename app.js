@@ -1,16 +1,45 @@
+
 var express = require('express');
-var app = express();
+var textNilExpress = express();
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
 
-app.locals.title = 'textNIL'
+var textNilPostSchema = ({title: String, text: String});
+var textNilPost = mongoose.model('Post', textNilPostSchema);
 
-app.set('views', __dirname + '/views')
-app.set('view engine', 'jade')
+var tp1 = new textNilPost({ text: 'congue lacinia dui, a porttitor lectus' });
 
-app.use(express.static(__dirname + '/public'))
+tp1.save(function (err) {
+  if (err) // ...
+  console.log('meow');
+});
 
-app.get('/', function (req, res) {
-  res.render('index')
+textNilExpress.use(express.bodyParser());
+
+textNilExpress.locals.title = 'textNIL'
+textNilExpress.set('views', __dirname + '/views')
+textNilExpress.set('view engine', 'jade')
+textNilExpress.use(express.static(__dirname + '/public'))
+
+textNilExpress.post('/api/post', function (req, res) {
+	var newPost = new textNilPost(req.body);
+	newPost.save(function(error) {
+		if(error){
+			console.log("error saving post");
+		}else{
+			console.log("success");
+		}
+	})
+	//console.log(req.body);
+	res.send(200);
 })
 
-app.listen(3000);
-/* console.log('Listening on port 3000'); */
+textNilExpress.get('*', function (req, res) {
+  res.render('index');
+})
+
+textNilExpress.get('/index*', function (req, res) {
+  res.render('index');
+})
+
+textNilExpress.listen(3000);

@@ -1,0 +1,10 @@
+script(type="text/template", id="form_template")
+	form(id='postForm')
+		fieldset
+			legend Fieldset
+			.row
+				.large-12.columns
+					label Input label
+					input(type='text', name='newText', id='text', placeholder!='<%= postText %>')
+					.large.button.expand.radius(type='submit', id='submitButton') submit
+	p <%= postText %>
