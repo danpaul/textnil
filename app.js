@@ -1,27 +1,18 @@
-
 var express = require('express');
-var textNilExpress = express();
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
 
+var textNil = express();
+textNil.use(express.bodyParser());
+textNil.use(express.static(__dirname + '/public'));
+textNil.set('views', __dirname + '/views');
+textNil.set('view engine', 'jade');
+textNil.locals.title = 'textNIL';
+
+mongoose.connect('mongodb://localhost/test');
 var textNilPostSchema = ({title: String, text: String});
 var textNilPost = mongoose.model('Post', textNilPostSchema);
 
-var tp1 = new textNilPost({ text: 'congue lacinia dui, a porttitor lectus' });
-
-tp1.save(function (err) {
-  if (err) // ...
-  console.log('meow');
-});
-
-textNilExpress.use(express.bodyParser());
-
-textNilExpress.locals.title = 'textNIL'
-textNilExpress.set('views', __dirname + '/views')
-textNilExpress.set('view engine', 'jade')
-textNilExpress.use(express.static(__dirname + '/public'))
-
-textNilExpress.post('/api/post', function (req, res) {
+textNil.post('/api/post', function (req, res) {
 	var newPost = new textNilPost(req.body);
 	newPost.save(function(error) {
 		if(error){
@@ -34,12 +25,8 @@ textNilExpress.post('/api/post', function (req, res) {
 	res.send(200);
 })
 
-textNilExpress.get('*', function (req, res) {
+textNil.get('*', function (req, res) {
   res.render('index');
 })
 
-textNilExpress.get('/index*', function (req, res) {
-  res.render('index');
-})
-
-textNilExpress.listen(3000);
+textNil.listen(3000);
