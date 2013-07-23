@@ -19,17 +19,13 @@ app.get('/neo', function (req, res)
 	   	'Accept': 'application/json',
 	   	'Content-Type': 'application/json'
 	   })
-	   .send({	query: "START n=node(18) RETURN n.name" })
+	   .send({ query: "START n=node(18) RETURN n.name" })
 	   .end(function(neoRes){res.send(neoRes.text)});
-
 });
 
-app.get('*', function (req, res) {
+app.get('*', function (req, res)
+{
   res.render('index');
 });
 
 app.listen(3000);
-
-//--------------------------------------------------------------------------------
-// Testing
-//--------------------------------------------------------------------------------
