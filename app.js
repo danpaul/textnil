@@ -1,32 +1,35 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var request = require('superagent');
 
-var textNil = express();
-textNil.use(express.bodyParser());
-textNil.use(express.static(__dirname + '/public'));
-textNil.set('views', __dirname + '/views');
-textNil.set('view engine', 'jade');
-textNil.locals.title = 'textNIL';
+var config = require('./config');
 
-mongoose.connect('mongodb://localhost/test');
-var textNilPostSchema = ({title: String, text: String});
-var textNilPost = mongoose.model('Post', textNilPostSchema);
+var app = express();
 
-textNil.post('/api/post', function (req, res) {
-	var newPost = new textNilPost(req.body);
-	newPost.save(function(error) {
-		if(error){
-			console.log("error saving post");
-		}else{
-			console.log("success");
-		}
-	})
-	//console.log(req.body);
-	res.send(200);
-})
+app.use(express.bodyParser());
+app.use(express.static(__dirname + '/public'));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.locals.title = 'textNIL';
 
-textNil.get('*', function (req, res) {
+app.get('/neo', function (req, res) 
+{
+	request.post('http://localhost:7474/db/data/cypher')
+	   .set({
+	   	'Accept': 'application/json',
+	   	'Content-Type': 'application/json'
+	   })
+	   .send({	query: "START n=node(18) RETURN n.name" })
+	   .end(function(neoRes){res.send(neoRes.text)});
+
+});
+
+app.get('*', function (req, res) {
   res.render('index');
-})
+});
 
-textNil.listen(3000);
+app.listen(3000);
+
+//--------------------------------------------------------------------------------
+// Testing
+//--------------------------------------------------------------------------------

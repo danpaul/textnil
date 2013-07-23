@@ -1,1 +1,1 @@
-This is a project for threaded collaborative text editing in an early development stage.
+in development
