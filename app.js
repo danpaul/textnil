@@ -12,7 +12,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.locals.title = 'textNIL';
 
-app.get('/neo', function (req, res) 
+function neoGetTest(req, res)
 {
 	request.post('http://localhost:7474/db/data/cypher')
 	   .set({
@@ -21,6 +21,12 @@ app.get('/neo', function (req, res)
 	   })
 	   .send({ query: "START n=node(18) RETURN n.name" })
 	   .end(function(neoRes){res.send(neoRes.text)});
+}
+
+app.get('/neo', function (req, res) 
+{
+	neoGetTest(req, res);
+
 });
 
 app.get('*', function (req, res)
