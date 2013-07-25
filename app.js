@@ -12,21 +12,35 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.locals.title = 'textNIL';
 
-function neoGetTest(req, res)
+var urlBase = 'http://localhost:7474/db/data/cypher';
+
+var requestParameters = 
 {
-	request.post('http://localhost:7474/db/data/cypher')
-	   .set({
-	   	'Accept': 'application/json',
-	   	'Content-Type': 'application/json'
-	   })
-	   .send({ query: "START n=node(18) RETURN n.name" })
-	   .end(function(neoRes){res.send(neoRes.text)});
+	'Accept': 'application/json',
+	'Content-Type': 'application/json'
+}
+
+function neoMakeRequest(query, callback)
+{
+	request.post(urlBase)
+	   .set(requestParameters)
+	   .send(query)
+	   .end(callback)
+	   	//function(neoRes){res.send(neoRes.text)});
+}
+
+function neoCreateNode(req, res)
+{
+
 }
 
 app.get('/neo', function (req, res) 
 {
-	neoGetTest(req, res);
-
+	neoMakeRequest({ query: "START n=node(18) RETURN n.name" }, function(err, neoRes)
+	{
+		if(err){console.log(err);}
+		else{res.send(neoRes.text);}
+	})
 });
 
 app.get('*', function (req, res)
