@@ -16,7 +16,9 @@ var postSchema = mongoose.Schema
 ({
 	content: String,
 	author: {type: mongoose.Schema.Types.ObjectId, index: true},
-	date: Date
+	parent: mongoose.Schema.Types.ObjectId,
+	children: {type: [mongoose.Schema.Types.ObjectId], index: true},
+	date: {type: Date, default: Date.now}
 });
 
 var postModel = mongoose.model(config.postModelName, postSchema);

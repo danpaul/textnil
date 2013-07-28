@@ -42,8 +42,10 @@ author.update({userName: 'dan'}, {email: 'bar@bar.com'}, function(err, record){
 author.read({userName: 'dan'}, function(err, record)
 {
 	if(err){console.log(err);
-	}else{console.log(record);}
+	}else{console.log(record[0]._id);}
 });
+
+var foo = 'foo';
 
 // author.delete({userName: 'dan'}, function(err, record)
 // {
