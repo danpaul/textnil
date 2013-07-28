@@ -20,7 +20,7 @@ var authorSchema = mongoose.Schema
 	email: {type: String, index: true}
 });
 
-var authorModel = mongoose.model(config.authorSchemaName, authorSchema);
+var authorModel = exports.model = mongoose.model(config.authorSchemaName, authorSchema);
 
 //------------------------------------------------------------------------------
 // CRUD
@@ -31,17 +31,20 @@ exports.create = function(authorObject, callback)
 	new authorModel(authorObject).save(callback);
 }
 
-exports.read = function(queryObject, callback)
+//passes an array of matches
+exports.findAll = function(queryObject, callback)
 {
 	authorModel.find(queryObject).exec(callback);
 }
 
-exports.delete = function(queryObject, callback)
+exports.deleteAll = function(queryObject, callback)
 {
 	authorModel.find(queryObject).remove(callback);
 }
 
-exports.update = function(queryObject, updateObject, callback)
+exports.updateAll = function(queryObject, updateObject, callback)
 {
 	authorModel.update(queryObject, updateObject, callback);
 }
+
+exports.foo = "foo";

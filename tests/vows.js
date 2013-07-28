@@ -35,18 +35,51 @@ vows.describe('author').addBatch
 		{
 			topic: function()
 			{
-				author.update(matchRecord, author2, this.callback);
+				author.updateAll(matchRecord, author2, this.callback);
 			},
 			'can update without error': function(err, record)
 			{
-p(record);
 				assert.isNull(err);
+			},
+			'after an update':
+			{
+				topic: function()
+				{
+					author.findAll({userName: 'stan'}, this.callback);
+				},
+				'updated record is saved': function(err, record)
+				{
+					assert.isNull(err);
+					assert.equal(record[0].userName, 'stan');
+					assert.equal(record[0].email, 'email@bar.com');
+				},
+				'after record is saved':
+				{
+					topic: function()
+					{
+						author.deleteAll({userName: 'stan'}, this.callback)
+					},
+					'record is deleted without error': function(err, record)
+					{
+						assert.isNull(err);
+					},
+						'after record is deleted':
+						{
+							topic: function()
+							{
+								author.findAll({userName: 'stan'}, this.callback)
+							},
+							'record is deleted without error': function(err, record)
+							{
+								assert.isNull(err);
+								p(record == null);
+								//if(!(record)){p('success!')}else{p('wa?')}
+								//assert.equal([], record);
+							}
+							
+						}
+				}
 			}
-			// 'can update record': function(err, record)
-			// {
-			// 	assert.equal(record.userName, 'stan');
-			// 	assert.equal(record.email, 'email@bar.com');
-			// }
 		}
 	}
 }).export(module);

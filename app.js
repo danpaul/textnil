@@ -24,7 +24,7 @@ app.listen(3000);
 // Testing
 
 //p(config);
-var post = require(config.modelsDirectory + '/post');
+// var post = require(config.modelsDirectory + '/post');
 var author = require(config.modelsDirectory + '/author');
 
 var dan ={ userName: 'dan', email: 'email@foo.com'};
@@ -46,9 +46,3 @@ author.read({userName: 'dan'}, function(err, record)
 });
 
 var foo = 'foo';
-
-// author.delete({userName: 'dan'}, function(err, record)
-// {
-// 	if(err){console.log(err);
-// 	}else{console.log(record);}
-// });
