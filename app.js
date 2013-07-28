@@ -27,11 +27,16 @@ app.listen(3000);
 var post = require(config.modelsDirectory + '/post');
 var author = require(config.modelsDirectory + '/author');
 
-var dan ={ userName: 'danB', email: 'email@foo.com'};
+var dan ={ userName: 'dan', email: 'email@foo.com'};
 
 author.create(dan, function(err, record){
 	if(err){console.log(err);
 	}else{console.log('success');}
+});
+
+author.update({userName: 'dan'}, {email: 'bar@bar.com'}, function(err, record){
+	if(err){console.log(err);
+	}else{console.log('success2');}
 });
 
 author.read({userName: 'dan'}, function(err, record)
@@ -39,3 +44,9 @@ author.read({userName: 'dan'}, function(err, record)
 	if(err){console.log(err);
 	}else{console.log(record);}
 });
+
+// author.delete({userName: 'dan'}, function(err, record)
+// {
+// 	if(err){console.log(err);
+// 	}else{console.log(record);}
+// });

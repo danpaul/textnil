@@ -33,3 +33,13 @@ exports.read = function(queryObject, callback)
 {
 	authorModel.find(queryObject).exec(callback);
 }
+
+exports.delete = function(queryObject, callback)
+{
+	authorModel.find(queryObject).remove(callback);
+}
+
+exports.update = function(queryObject, updateObject, callback)
+{
+	authorModel.update(queryObject, updateObject, callback);
+}
