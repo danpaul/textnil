@@ -13,108 +13,66 @@ mongoose.connect(config.dbURI);
 var post = require(config.modelsDirectory + '/post');
 var author = require(config.modelsDirectory + '/author');
 
+var author1 ={ userName: 'dan', email: 'email@foo.com'};
+var author2 ={ userName: 'stan', email: 'email@bar.com'};
+var author3 ={ userName: 'fran', email: 'email@bat.com'};
 
-//create an array of tests that all return true, if they return true tests pass, no need to worry about complicated framework
+var matchRecord = { userName: 'dan'}
 
-var dan ={ userName: 'dan', email: 'email@foo.com'};
 
-var tests = 
-[
-	function()
-	{
-p('foo');
-		author.create(dan, function(err, record){
-			return('failed to save');
-		});
-//	if(err){console.log(err);
-//	}else{console.log('success');}
-	}
-]
 
-function nextTest(message)
+describe('author', function()
 {
-	var currentTest = 0;
-	if(message === undefined || message === true)
+	it(' should save', function(done)
 	{
-		currentTest += 1;
-		if(currentTest <= tests.length)
+		author.model(author1).save(function(err, record)
 		{
-			tests[i-1]();
-		}else{
-			p('victory is yours!');
-		}
-	}
-
-}
-
-
-for(var i = 0; i < tests.length; i++)
-{
-	var result = tests[i]();
-	if(result !== true)
+			if(err) throw err;
+			assert.equal(record.userName, 'dan');
+			assert.equal(record.email, 'email@foo.com');
+			done();
+		})
+	})
+	it(' should find by userName', function(done)
 	{
-		p(result);
-		i = tests.length;
-	}
-}
+		author.model.findOne({userName: 'dan'}).exec(function(err, record)
+		{
+			if(err) throw err;
+			assert.equal(record.userName, 'dan');
+			assert.equal(record.email, 'email@foo.com');
+			done();
+		})
+	})
+	it(' should find by email', function(done)
+	{
+		author.model.findOne({email: 'email@foo.com'}).exec(function(err, record)
+		{
+			if(err) throw err;
+			assert.equal(record.userName, 'dan');
+			assert.equal(record.email, 'email@foo.com');
+			done();
+		})
+	})
+})
 
-
-
-//var author1 ={ userName: 'dan', email: 'email@foo.com'};
-//var author2 ={ userName: 'stan', email: 'email@bar.com'};
-//var author3 ={ userName: 'fran', email: 'email@bat.com'};
-
-// var author = require(config.modelsDirectory + '/author');
-
-// var dan ={ userName: 'dan', email: 'email@foo.com'};
-
-// author.create(dan, function(err, record){
-// 	//assert.equal('f', 'b', 'foo');
-// 	throw new Error("woops");
-// 	if(err){console.log(err);
-// 	}else{console.log('success');}
-// });
-
-
-// describe('author', function()
+// exports.create = function(authorObject, callback)
 // {
-// 	describe(' create()', function()
-// 	{
-// 		it(' should save without error', function()
-// 		{
-// 			//assert.equal(foo.length, 3);
-// 			author.create(author1, function(err, record){
-// 				if(true){assert.fail();}
-// 				console.log("hello");
-// 				assert.equal(record.userName, 'danff');
-// 				done();
-// 			})
-// 		})
-// 	})
-// })
+// 	new authorModel(authorObject).save(callback);
+// }
 
-// describe('author', function (){
-// 	describe('create()', function(){
-// 		it('should save without an error', function(done){
-// 			author.create(author1, function(err, record){
-// 				if(err){throw err;}
-// 			})
-// 		})
-// 	})
-// })
-
-// author.create(dan, function(err, record){
-// 	if(err){console.log(err);
-// 	}else{console.log('success');}
-// });
-
-// author.update({userName: 'dan'}, {email: 'bar@bar.com'}, function(err, record){
-// 	if(err){console.log(err);
-// 	}else{console.log('success2');}
-// });
-
-// author.read({userName: 'dan'}, function(err, record)
+// //passes an array of matches
+// exports.findAll = function(queryObject, callback)
 // {
-// 	if(err){console.log(err);
-// 	}else{console.log(record[0]._id);}
-// });
+// 	authorModel.find(queryObject).exec(callback);
+// }
+
+// exports.deleteAll = function(queryObject, callback)
+// {
+// 	authorModel.find(queryObject).remove(callback);
+// }
+
+// exports.updateAll = function(queryObject, updateObject, callback)
+// {
+// 	authorModel.update(queryObject, updateObject, callback);
+// }
+

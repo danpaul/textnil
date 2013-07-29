@@ -72,7 +72,7 @@ vows.describe('author').addBatch
 							'record is deleted without error': function(err, record)
 							{
 								assert.isNull(err);
-								p(record == null);
+								assert.equal(record.length, 0);
 								//if(!(record)){p('success!')}else{p('wa?')}
 								//assert.equal([], record);
 							}

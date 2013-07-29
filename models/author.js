@@ -26,25 +26,25 @@ var authorModel = exports.model = mongoose.model(config.authorSchemaName, author
 // CRUD
 //------------------------------------------------------------------------------
 
-exports.create = function(authorObject, callback)
-{
-	new authorModel(authorObject).save(callback);
-}
+// exports.create = function(authorObject, callback)
+// {
+// 	new authorModel(authorObject).save(callback);
+// }
 
-//passes an array of matches
-exports.findAll = function(queryObject, callback)
-{
-	authorModel.find(queryObject).exec(callback);
-}
+// //passes an array of matches
+// exports.findAll = function(queryObject, callback)
+// {
+// 	authorModel.find(queryObject).exec(callback);
+// }
 
-exports.deleteAll = function(queryObject, callback)
-{
-	authorModel.find(queryObject).remove(callback);
-}
+// exports.deleteAll = function(queryObject, callback)
+// {
+// 	authorModel.find(queryObject).remove(callback);
+// }
 
-exports.updateAll = function(queryObject, updateObject, callback)
-{
-	authorModel.update(queryObject, updateObject, callback);
-}
+// exports.updateAll = function(queryObject, updateObject, callback)
+// {
+// 	authorModel.update(queryObject, updateObject, callback);
+// }
 
-exports.foo = "foo";
+//exports.foo = "foo";
