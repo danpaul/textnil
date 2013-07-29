@@ -3,7 +3,7 @@ p = console.log
 var mongoose = require('mongoose');
 var express = require('express');
 var config = require('./config');
-var app = express();
+var app = exports.app = express();
 
 mongoose.connect(config.dbURI);
 
