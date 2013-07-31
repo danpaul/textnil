@@ -21,10 +21,4 @@ var postSchema = mongoose.Schema
 	date: {type: Date, default: Date.now}
 });
 
-var postModel = mongoose.model(config.postModelName, postSchema);
-
-// ///////////////////////fix this
-// var salesRecordModel = require(config.salesRecordModelfile).createModel();
-// var monthlyBoroughSummaryModel = mongoose.model(config.mothlyBoroughSummariesModelName, monthlyBoroughSummarySchema);
-
-//exports.foo = function(){p('foo');}
+var postModel = exports.model = mongoose.model(config.postModelName, postSchema);
