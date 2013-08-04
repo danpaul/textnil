@@ -1,6 +1,9 @@
 config = {}
 
 config.modelsDirectory = __dirname + '/models';
+config.model = {};
+config.model.author = config.modelsDirectory + '/author';
+config.model.post = config.modelsDirectory + '/post';
 
 config.dbURI = 'mongodb://localhost:27017/textnil';
 

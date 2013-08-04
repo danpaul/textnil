@@ -30,10 +30,10 @@ date: {type: Date, default: Date.now}
 
 var post1 = 
 {
-	content: 'this is some text',
-	author: null,
-	parent: null,
-	children: null
+	content: 'this is some text'
+	// author: null,
+	// parent: null,
+	// children: null
 }
 
 
@@ -69,7 +69,7 @@ describe('author', function()
 			assert.equal(record.userName, 'dan');
 			assert.equal(record.email, 'email@foo.com');
 			done();
-		})
+		});
 	});
 })
 
@@ -89,56 +89,21 @@ describe('post', function()
 		})
 	});
 
-	post.model.findOne(function(err, record){p(record)});
+	it('should findOne', function(done)
+	{
+		post.model.findOne(function(err, record)
+		{
+			if(err){throw err;
+			}else{
+				if(!record.content === post1.content){throw err;}
+				//console.log(record);
+				done();
+			}
+		});
+	});
 
-	// it(' should find by userName', function(done)
-	// {
-	// 	author.model.findOne({userName: 'dan'}).exec(function(err, record)
-	// 	{
-	// 		if(err) throw err;
-	// 		assert.equal(record.userName, 'dan');
-	// 		assert.equal(record.email, 'email@foo.com');
-	// 		done();
-	// 	})
-	// });
-
-	// it(' should find by email', function(done)
-	// {
-	// 	author.model.findOne({email: 'email@foo.com'}).exec(function(err, record)
-	// 	{
-	// 		if(err) throw err;
-	// 		assert.equal(record.userName, 'dan');
-	// 		assert.equal(record.email, 'email@foo.com');
-	// 		done();
-	// 	})
-	// });
-
-	// after(function(done)
-	// {
-	// 	mongoose.connection.close();
-	// 	done();
-	// });
-})
-
-
-//  exports.create = function(authorObject, callback)
-// {
-// 	new authorModel(authorObject).save(callback);
-// }
-
-// //passes an array of matches
-// exports.findAll = function(queryObject, callback)
-// {
-// 	authorModel.find(queryObject).exec(callback);
-// }
-
-// exports.deleteAll = function(queryObject, callback)
-// {
-// 	authorModel.find(queryObject).remove(callback);
-// }
-
-// exports.updateAll = function(queryObject, updateObject, callback)
-// {
-// 	authorModel.update(queryObject, updateObject, callback);
-// }
-
+	it('should save as child')
+	{
+		post.model.saveAsChild();
+	}
+});

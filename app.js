@@ -1,7 +1,9 @@
 p = console.log
+pr = function(e,r){if(e){p(e)}else{p(r)}};
 
-var mongoose = require('mongoose');
-var express = require('express');
+var mongoose = require('mongoose'),
+	express = require('express');
+
 var config = require('./config');
 var app = exports.app = express();
 
@@ -23,26 +25,21 @@ app.listen(3000);
 //--------------------------------------------------------------------------------
 // Testing
 
-var author = require(config.modelsDirectory + '/author');
+//var author = require(config.model.author);
 
+var Post = require(config.model.post).model;
 
+var post = new Post({content: 'bar'});
 
-// var dan ={ userName: 'dan', email: 'email@foo.com'};
+var post2 = new Post({content: 'baz'});
 
-// author.create(dan, function(err, record){
-// 	if(err){console.log(err);
-// 	}else{console.log('success');}
-// });
+post.save(function(err, record)
+{
+	if(err){console.log(err)
+	}else{
+		post.saveAsChild(record.id, function(err, record){
 
-// author.update({userName: 'dan'}, {email: 'bar@bar.com'}, function(err, record){
-// 	if(err){console.log(err);
-// 	}else{console.log('success2');}
-// });
+		});
+	}
+});
 
-// author.read({userName: 'dan'}, function(err, record)
-// {
-// 	if(err){console.log(err);
-// 	}else{console.log(record[0]._id);}
-// });
-
-var foo = 'foo';
