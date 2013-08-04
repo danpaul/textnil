@@ -1,0 +1,1 @@
+consider implementation of posts "children" attribute. How large will this array become? Should it be sorted? Should we maintain a separate model/collection for parent/children relations?

@@ -2,11 +2,11 @@
 // require/setup
 //------------------------------------------------------------------------------
 
-var config = require('../config');
-
 var mongoose = require('mongoose'),
 	_ = require('underscore'),
 	async = require('async');
+
+var config = require('../config');
 
 var db = config.dbURI;
 
@@ -14,10 +14,11 @@ var db = config.dbURI;
 // schema
 //------------------------------------------------------------------------------
 
-var authorSchema = mongoose.Schema
+
+var storySchema = mongoose.Schema
 ({
-	userName: {type: String, index: true},
-	email: {type: String, index: true}
+	author: {type: mongoose.Schema.Types.ObjectId},
+	root: {type: mongoose.Schema.Types.ObjectId, default: null}
 });
 
-var authorModel = exports.model = mongoose.model('author', authorSchema);
+var Story = exports.model = mongoose.model('story', storySchema);

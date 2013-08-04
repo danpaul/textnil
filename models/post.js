@@ -19,33 +19,41 @@ var db = config.dbURI;
 var postSchema = mongoose.Schema
 ({
 	content: String,
-	author: {type: mongoose.Schema.Types.ObjectId, index: true, default: null},
-	parent: {type: mongoose.Schema.Types.ObjectId, default: null},
-	children: {type: [mongoose.Schema.Types.ObjectId], index: true, default: []},
-	date: {type: Date, default: Date.now}
+	author: {type: mongoose.Schema.Types.ObjectId, index: true}
 });
 
-//animalSchema.methods.findSimilarTypes
+var PostModel = exports.model = mongoose.model('post', postSchema);
 
-postSchema.statics.foo = function(){console.log('foo');}
+// postSchema.methods.saveAsChild = function(parentId, cb)
+// {
+// 	var self = this;
 
-postSchema.methods.saveAsChild = function(parentId)
-{
-	asyn.series
-	([
-		this.save(function(err, record)
-		{
-			p('foo');
-		});
-	]);
-	// 	}
-	// ]);
-	//save child
-	//append child to parent if not already saved
-	//get parent id
-	//find parent
-	//add child to child
-	//return foo;
-}
-
-var postModel = exports.model = mongoose.model(config.postModelName, postSchema);
+// 	async.series
+// 	([
+// 		function(callback)
+// 		{
+// 			self.parent = parentId;
+// 			self.save(function(err, record)
+// 			{
+// 				if(err)
+// 				{
+// 					callback(err);
+// 					return;
+// 				}else{
+// 					callback();
+// 				}
+// 			});
+// 		},
+// 		function(callback)
+// 		{
+// 			PostModel.findOne({_id: parentId}, function(err, record){
+// 				if(err){console.log(err)
+// 				}else{
+// 					;
+// 				}
+// 			});
+// 		}
+// 	],
+// 		function(err){if(err)throw(err)}
+// 	);
+// }
