@@ -25,7 +25,8 @@ var postNodeSchema = mongoose.Schema
 	depth: {type: Number, index: true}
 }).index({story: 1, parent: 1});
 
-postNodeSchema.methods.addChildPost = function(parentNode, childPost)
+//takes 
+postNodeSchema.methods.insertChild = function(parent, child)
 {
 	async.series
 	([

@@ -26,17 +26,11 @@ app.get('*', function (req, res)
 app.listen(3000);
 
 //--------------------------------------------------------------------------------
-// Testing outline
+var models = require(config.models);
 
-//create author
+var story = new models.story.model();
 
-//create post
-
-//create story
-
-//add posts to story
-
-var models = config.models;
+story.insert();
 
 var author = new models.author.model({userName: 'dan', email: 'foo@email.com'});
 
@@ -129,10 +123,12 @@ async.series
 			}else{callback()}
 		});
 	},
-	//add child
+	//insert child into parent
 	function(callback)
 	{
-
+	// 	story.insert(rootPost, post02, function(err, record){
+	// 		callback();
+	// 	});
 	}
 
 	//add nodes to story
