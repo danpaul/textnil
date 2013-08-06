@@ -58,7 +58,7 @@ storySchema.methods.buildTree = function(startNode)
 //determine if each is currently in the tree(keep track via an array or more effic. data structure?)
 	//if they are, add them to the tree
 	//else add to tree and add a reference to that tree node to an array of 'next children'
-
+//request entire array simultainiously
 	while(currentDepth < searchDepth)
 	{
 		//iterate over children
