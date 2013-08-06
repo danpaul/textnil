@@ -44,7 +44,6 @@ storySchema.methods.link = function(parentNode, childNode, callback)
 	}).save(callback);
 }
 
-
 //can have the following signature (if the second, there is no depth limit):
 //	buildTree(startNode, depth, callback)
 //	buildTree(startNode, callback)
@@ -71,63 +70,48 @@ storySchema.methods.buildTree = function(startNode, callback)
 	}
 
 
-	function setNodeChildren(treeNode)
+	function findChildren(treeNode, callback)
 	{
-		//var children = [];
+		PostNode.find({story: self._id, parent: treeNode.self}, function(err, records)
+		{
+			if(err){console.log(err); callback();
+			}else{
+				_.each(records, function(record)
+				{
+					treeNode.children.push(makeTreeNode(record._id));
+				})
+				buildNodeTree(treeNode.children, callback);
+			}
+		});	
+	}
+
+	function buildNodeTree(treeNodeArray, callback)
+	{
 		async.series
 		([
 			function(callback)
 			{
-	//console.log(treeNode);
-				PostNode.find({story: self._id, parent: treeNode.self}, function(err, records)
+				if(treeNodeArray === 0)
 				{
-					if(err){console.log(err); callback();
-					}else{
-						_.each(records, function(record)
-						{
-							treeNode.children.push(makeTreeNode(record._id));
-						})
-						callback();
-					}
-				});
-			},
-			function(callback)
-			{
-				async.forEach
-				callback();
+					callback();
+				}else{
+					async.forEachSeries(treeNodeArray, function(treeNode, callback)
+					{
+						findChildren(treeNode, callback);
+					},function(){callback()});
+				}
 			}
 		],
-		function(callback)
+		function()
 		{
-console.log(treeNode);
+			callback();//console.log(root);
 		});
-		//return children;
 	}
 
 	var root = makeTreeNode(startNode._id);
-
-	setNodeChildren(root);
-
-
-
- 	callback();
-
-//build array of nodes on current level
-//iterate over each and add to tree
-//determine if each is currently in the tree(keep track via an array or more effic. data structure?)
-	//if they are, add them to the tree
-	//else add to tree and add a reference to that tree node to an array of 'next children'
-//request entire array simultainiously
-	// while(currentDepth < searchDepth)
-	// {
-	// 	//iterate over children
-	// }
-	// Post.findOne(function(e,r){
-	// 	console.log(r);
-	// 	callback();
-	// })
+	var rootarray = [root];
+	buildNodeTree(rootarray, function(){console.log(root)});
 
 }
 
 var Story = exports.model = mongoose.model('story', storySchema);
-
