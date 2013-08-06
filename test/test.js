@@ -1,9 +1,12 @@
 require('../app.js');
 
-var async = require('async'),
-	assert = require('assert');
-
 var config = require('../config');
+
+var async = require('async'),
+	assert = require('assert'),
+	mongoose = require('mongoose');
+
+// mongoose.connect(config.dbURI);
 
 var Post = require(config.models.post).model;
 var Author = require(config.models.author).model;
@@ -144,25 +147,44 @@ async.series
 	//link nodes
 	function(callback)
 	{
+
+// 	Post.findOne(function(e,r){
+// console.log('foo');
+// 		console.log(r);
+// 		callback();
+// 	});
+
+
 		story.link(rootPostNode, childNode02, function(err, record)
 		{
 			if(err){throw err
 			}else{
-				assert.equal(record.post, childNode02.post._id);
+				assert.equal(record.post, childNode02.post);
 				assert.equal(record.depth, 1);
 				assert.equal(record.parent, rootPostNode._id);
 			}
 			callback();
 		});
 	},
+
+
 	function(callback)
 	{
 		story.buildTree(rootPostNode, function(err, record)
 		{
 			if(err){throw err
 			}else{
-console.log(record);
+//console.log('back');
 			}
-		})
+		});
+
+// story.test();
+// 		story.buildTree(rootPostNode, function(err, record)
+// 		{
+// 			if(err){throw err
+// 			}else{
+// console.log(record);
+// 			}
+// 		})
 	}
 ], function(err){if(err) throw err})

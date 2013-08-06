@@ -1,10 +1,13 @@
+p = console.log
+
 //------------------------------------------------------------------------------
 // require/setup
 //------------------------------------------------------------------------------
 
-var mongoose = require('mongoose');
-	// _ = require('underscore'),
-	// async = require('async');
+var mongoose = require('mongoose'),
+	_ = require('underscore'),
+	async = require('async');
+
 var config = require('../config');
 
 var Post = require(config.models.post).model;
@@ -22,36 +25,92 @@ var storySchema = mongoose.Schema
 
 storySchema.methods.insert = function(parentNode, childPost, callback)
 {
-	var postNode = new PostNode();
-	postNode.parent = parentNode._id;
-	postNode.post = childPost._id;
-	postNode.story = this._id;
-	postNode.depth = parentNode.depth + 1;
-	postNode.save(callback);
+	new PostNode({
+		parent: parentNode._id,
+		post: childPost._id,
+		story: this._id,
+		depth: parentNode.depth + 1
+	}).save(callback);
 }
 
 storySchema.methods.link = function(parentNode, childNode, callback)
 {
-	var postNode = new PostNode();
-	postNode.parent = parentNode._id;
-	postNode.post = childNode.post._id;
-	postNode.story = this._id;
-	postNode.depth = parentNode.depth + 1;
-	postNode.save(callback);
+	new PostNode
+	({
+		parent: parentNode._id,
+		post: childNode.post,
+		story: this._id,
+		depth: parentNode.depth + 1
+	}).save(callback);
 }
 
-storySchema.methods.buildTree = function(startNode)
+
+//can have the following signature (if the second, there is no depth limit):
+//	buildTree(startNode, depth, callback)
+//	buildTree(startNode, callback)
+storySchema.methods.buildTree = function(startNode, callback)
 {
+	var self = this;
 	var searchDepth = Infinity;
 	var currentDepth = 0;
-	var tree = {}
-	tree.child = startNode._id;
-
+	var callback = arguments[1];
+	
 	if(arguments.length === 3)
 	{
 		searchDepth = arguments[1];
 		var callback = arguments[2];
 	}
+
+	function makeTreeNode(nodeId)
+	{
+		return(
+		{
+			self: nodeId,
+			children: []
+		});
+	}
+
+
+	function setNodeChildren(treeNode)
+	{
+		//var children = [];
+		async.series
+		([
+			function(callback)
+			{
+	//console.log(treeNode);
+				PostNode.find({story: self._id, parent: treeNode.self}, function(err, records)
+				{
+					if(err){console.log(err); callback();
+					}else{
+						_.each(records, function(record)
+						{
+							treeNode.children.push(makeTreeNode(record._id));
+						})
+						callback();
+					}
+				});
+			},
+			function(callback)
+			{
+				async.forEach
+				callback();
+			}
+		],
+		function(callback)
+		{
+console.log(treeNode);
+		});
+		//return children;
+	}
+
+	var root = makeTreeNode(startNode._id);
+
+	setNodeChildren(root);
+
+
+
+ 	callback();
 
 //build array of nodes on current level
 //iterate over each and add to tree
@@ -59,10 +118,15 @@ storySchema.methods.buildTree = function(startNode)
 	//if they are, add them to the tree
 	//else add to tree and add a reference to that tree node to an array of 'next children'
 //request entire array simultainiously
-	while(currentDepth < searchDepth)
-	{
-		//iterate over children
-	}
+	// while(currentDepth < searchDepth)
+	// {
+	// 	//iterate over children
+	// }
+	// Post.findOne(function(e,r){
+	// 	console.log(r);
+	// 	callback();
+	// })
+
 }
 
 var Story = exports.model = mongoose.model('story', storySchema);
