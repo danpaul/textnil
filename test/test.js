@@ -4,7 +4,8 @@ var config = require('../config');
 
 var async = require('async'),
 	assert = require('assert'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+	_ = require('underscore');
 
 // mongoose.connect(config.dbURI);
 
@@ -18,6 +19,9 @@ var rootPost = new Post({content: 'foo'});
 var story = new Story();
 var rootPostNode = new PostNode();
 var post02 = new Post({content: 'bar'});
+var post03 = new Post({content: 'Lorem ipsum', author: author});
+
+
 var childNode = new PostNode();
 var childNode02 = new PostNode();
 
@@ -120,11 +124,7 @@ async.series
 	//insert child into child
 	function(callback)
 	{
-		new Post(
-		{
-			content: 'Lorem ipsum',
-			author: author
-		}).save(function(err, record)
+		post03.save(function(err, record)
 		{
 			if(err){throw err
 			}else
@@ -147,14 +147,6 @@ async.series
 	//link nodes
 	function(callback)
 	{
-
-// 	Post.findOne(function(e,r){
-// console.log('foo');
-// 		console.log(r);
-// 		callback();
-// 	});
-
-
 		story.link(rootPostNode, childNode02, function(err, record)
 		{
 			if(err){throw err
@@ -166,15 +158,21 @@ async.series
 			callback();
 		});
 	},
-
-
+	//get full node tree
 	function(callback)
 	{
 		story.buildTree(rootPostNode, function(err, record)
 		{
 			if(err){throw err
 			}else{
-console.log(record);
+				assert.equal(record.children.length, 2);
+				_.each(record.children, function(child)
+				{
+					if(child.children.length > 0)
+					{
+						assert.equal(child.children[0].self.equals(childNode02._id), true);
+					}
+				})
 			}
 		});
 	}
