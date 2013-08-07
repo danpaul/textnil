@@ -69,22 +69,6 @@ storySchema.methods.buildTree = function(startNode, callback)
 		});
 	}
 
-
-	function findChildren(treeNode, callback)
-	{
-		PostNode.find({story: self._id, parent: treeNode.self}, function(err, records)
-		{
-			if(err){console.log(err); callback();
-			}else{
-				_.each(records, function(record)
-				{
-					treeNode.children.push(makeTreeNode(record._id));
-				})
-				buildNodeTree(treeNode.children, callback);
-			}
-		});	
-	}
-
 	function buildNodeTree(treeNodeArray, callback)
 	{
 		async.series
@@ -97,7 +81,17 @@ storySchema.methods.buildTree = function(startNode, callback)
 				}else{
 					async.forEachSeries(treeNodeArray, function(treeNode, callback)
 					{
-						findChildren(treeNode, callback);
+						PostNode.find({story: self._id, parent: treeNode.self}, function(err, records)
+						{
+							if(err){console.log(err); callback();
+							}else{
+								_.each(records, function(record)
+								{
+									treeNode.children.push(makeTreeNode(record._id));
+								})
+								buildNodeTree(treeNode.children, callback);
+							}
+						});
 					},function(){callback()});
 				}
 			}
