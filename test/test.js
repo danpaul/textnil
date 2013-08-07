@@ -174,17 +174,8 @@ async.series
 		{
 			if(err){throw err
 			}else{
-//console.log('back');
+console.log(record);
 			}
 		});
-
-// story.test();
-// 		story.buildTree(rootPostNode, function(err, record)
-// 		{
-// 			if(err){throw err
-// 			}else{
-// console.log(record);
-// 			}
-// 		})
 	}
 ], function(err){if(err) throw err})

@@ -50,7 +50,7 @@ storySchema.methods.link = function(parentNode, childNode, callback)
 storySchema.methods.buildTree = function(startNode, callback)
 {
 	var self = this;
-	var searchDepth = Infinity;
+	var searchDepth = 2;//Infinity;
 	var currentDepth = 0;
 	var callback = arguments[1];
 	
@@ -69,13 +69,13 @@ storySchema.methods.buildTree = function(startNode, callback)
 		});
 	}
 
-	function buildNodeTree(treeNodeArray, callback)
+	function buildNodeTree(treeNodeArray, depth, callback)
 	{
 		async.series
 		([
 			function(callback)
 			{
-				if(treeNodeArray === 0)
+				if(treeNodeArray === 0 || depth >= searchDepth)
 				{
 					callback();
 				}else{
@@ -89,7 +89,7 @@ storySchema.methods.buildTree = function(startNode, callback)
 								{
 									treeNode.children.push(makeTreeNode(record._id));
 								})
-								buildNodeTree(treeNode.children, callback);
+								buildNodeTree(treeNode.children, depth + 1, callback);
 							}
 						});
 					},function(){callback()});
@@ -98,13 +98,13 @@ storySchema.methods.buildTree = function(startNode, callback)
 		],
 		function()
 		{
-			callback();//console.log(root);
+			callback(null, root);
 		});
 	}
 
 	var root = makeTreeNode(startNode._id);
 	var rootarray = [root];
-	buildNodeTree(rootarray, function(){console.log(root)});
+	buildNodeTree(rootarray, 0, callback);//function(){console.log(root)});
 
 }
 
