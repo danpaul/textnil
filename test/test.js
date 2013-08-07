@@ -21,7 +21,6 @@ var rootPostNode = new PostNode();
 var post02 = new Post({content: 'bar'});
 var post03 = new Post({content: 'Lorem ipsum', author: author});
 
-
 var childNode = new PostNode();
 var childNode02 = new PostNode();
 
