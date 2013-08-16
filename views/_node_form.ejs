@@ -1,0 +1,31 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#add_node_button").click(function(){
+			$.ajax({
+  				type: "POST",  
+  				url: "/addnode",  
+  				data: {text: $('#new_node_text').val()},
+  				success: function(){
+console.log('woop');
+  				}
+			});
+console.log('doop');
+		});
+	});
+</script>
+
+<div class="row">
+	<div class="large-4 columns">
+		<form action="">
+			<fieldset>
+				<legend>New node</legend>
+				<div class="row">
+					<div class="large-12.columns">	
+						<textarea rows="10" id="new_node_text" name="post"> </textarea>
+					</div>
+				</div>
+				<input id="add_node_button" class="small button radius expand" value="Submit">
+			</fieldset>
+		</form>
+	</div>
+</div>

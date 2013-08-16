@@ -1,0 +1,1 @@
+have to use ejs-localas for ejs layouts/views: https://github.com/RandomEtc/ejs-locals
