@@ -1,4 +1,5 @@
 var modelsDir = __dirname + '/models';
+var controllersDir = __dirname + '/controllers';
 
 config = {}
 
@@ -11,6 +12,10 @@ config.models.post = modelsDir +  '/post';
 config.models.postNode = modelsDir +  '/post_node';
 config.models.story = modelsDir +  '/story';
 
+config.controllers = {};
+config.controllers.story = controllersDir + '/story';
+
 config.concurrencyLimit = 10;
+config.defaulSearchDepth = 3;
 
 module.exports = config;

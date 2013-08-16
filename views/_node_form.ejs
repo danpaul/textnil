@@ -1,15 +1,21 @@
 <script type="text/javascript">
+	function getStory(storyId, callback){
+		$.ajax({
+			type: "GET",  
+			url: "story/" + storyId,
+			success: callback
+		});		
+	}
 	$(document).ready(function(){
+		getStory(1, function(){console.log("success")});	
 		$("#add_node_button").click(function(){
 			$.ajax({
   				type: "POST",  
   				url: "/addnode",  
   				data: {text: $('#new_node_text').val()},
   				success: function(){
-console.log('woop');
   				}
 			});
-console.log('doop');
 		});
 	});
 </script>

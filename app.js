@@ -4,8 +4,10 @@ var mongoose = require('mongoose'),
  	express = require('express'),
  	engine = require('ejs-locals');
 
-var config = require('./config');
 var app = exports.app = express();
+
+var config = require('./config');
+var controller = config.controllers;
 
 mongoose.connect(config.dbURI);
 
@@ -17,16 +19,22 @@ app.set('view engine', 'ejs');
 
 app.locals.title = 'textNIL';
 
+app.post('/addnode', function (req, res)
+{
+console.log(req.body.text);
+  res.send('in post');
+});
+
+app.get('/story/:id', function (req, res)
+{
+  //require(controller.story).getStory(req, res, req.params.id);
+  var test_id = '520e73b7c6b390016f000003';
+  require(controller.story).getStory(req, res, test_id);
+});
+
 app.get('*', function (req, res)
 {
   res.render('index');
-});
-
-app.post('/addnode', function (req, res)
-{
-//console.log(req.query);
-console.log(req.body.text);
-  res.send('in post');
 });
 
 app.listen(3000);

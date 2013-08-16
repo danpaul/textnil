@@ -47,10 +47,71 @@ storySchema.methods.link = function(parentNode, childNode, callback)
 //can have the following signature (if the second, there is no depth limit):
 //	buildTree(startNode, depth, callback)
 //	buildTree(startNode, callback)
-storySchema.methods.buildTree = function(startNode, callback)
+//storySchema.methods.buildTree = function(startNode, callback)
+// var buildTree = storySchema.methods.buildTree = function(startNode, callback)
+// {
+// 	var self = this;
+// 	var searchDepth = config.defaulSearchDepth;//Infinity;
+// 	var currentDepth = 0;
+// 	var callback = arguments[1];
+	
+// 	if(arguments.length === 3)
+// 	{
+// 		searchDepth = arguments[1];
+// 		var callback = arguments[2];
+// 	}
+
+// 	function makeTreeNode(nodeId)
+// 	{
+// 		return(
+// 		{
+// 			self: nodeId,
+// 			children: []
+// 		});
+// 	}
+
+// 	function buildNodeTree(treeNodeArray, depth, callback)
+// 	{
+// 		async.series
+// 		([
+// 			function(callback)
+// 			{
+// 				if(treeNodeArray === 0 || depth >= searchDepth)
+// 				{
+// 					callback();
+// 				}else{
+// 					async.forEachSeries(treeNodeArray, function(treeNode, callback)
+// 					{
+// 						PostNode.find({story: self._id, parent: treeNode.self}, function(err, records)
+// 						{
+// 							if(err){console.log(err); callback();
+// 							}else{
+// 								_.each(records, function(record)
+// 								{
+// 									treeNode.children.push(makeTreeNode(record._id));
+// 								})
+// 								buildNodeTree(treeNode.children, depth + 1, callback);
+// 							}
+// 						});
+// 					},function(){callback()});
+// 				}
+// 			}
+// 		],
+// 		function()
+// 		{
+// 			callback(null, root);
+// 		});
+// 	}
+
+// 	var root = makeTreeNode(startNode._id);
+// 	var rootarray = [root];
+// 	buildNodeTree(rootarray, 0, callback);
+// }
+
+var buildTree = storySchema.methods.buildTree = function(startNodeId, callback)
 {
 	var self = this;
-	var searchDepth = 2;//Infinity;
+	var searchDepth = config.defaulSearchDepth;//Infinity;
 	var currentDepth = 0;
 	var callback = arguments[1];
 	
@@ -102,10 +163,9 @@ storySchema.methods.buildTree = function(startNode, callback)
 		});
 	}
 
-	var root = makeTreeNode(startNode._id);
+	var root = {self: startNodeId, children: []}
 	var rootarray = [root];
-	buildNodeTree(rootarray, 0, callback);//function(){console.log(root)});
-
+	buildNodeTree(rootarray, 0, callback);
 }
 
 var Story = exports.model = mongoose.model('story', storySchema);

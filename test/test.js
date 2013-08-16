@@ -160,10 +160,14 @@ async.series
 	//get full node tree
 	function(callback)
 	{
-		story.buildTree(rootPostNode, function(err, record)
+console.log(story);
+// console.log(story.root);
+// console.log(rootPostNode);
+		story.buildTree(story.root, function(err, record)
 		{
 			if(err){throw err
 			}else{
+//console.log(record);
 				assert.equal(record.children.length, 2);
 				_.each(record.children, function(child)
 				{
