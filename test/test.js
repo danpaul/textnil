@@ -163,11 +163,13 @@ async.series
 //console.log(story);
 // console.log(story.root);
 // console.log(rootPostNode);
-		story.buildTree(story, function(err, record)
+		//story.buildTree(story, function(err, record)
+		story.buildTree(rootPostNode, function(err, record)
 		{
 			if(err){throw err
 			}else{
 console.log(record);
+//console.log(record.children[0].children);
 				// assert.equal(record.children.length, 2);
 				// _.each(record.children, function(child)
 				// {
@@ -177,6 +179,12 @@ console.log(record);
 				// 	}
 				// })
 			}
+			callback();
 		});
+	},
+	function(callback)
+	{
+		//Story.find('_id': rootPostNode.id)
+		callback();
 	}
 ], function(err){if(err) throw err})

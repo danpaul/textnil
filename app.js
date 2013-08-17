@@ -37,7 +37,7 @@ app.get('*', function (req, res)
   res.render('index');
 });
 
-var testId = '520e73b7c6b390016f000003';
-require(config.controllers.story).getStory(null, null, testId);
+// var testId = '520e73b7c6b390016f000003';
+// require(config.controllers.story).getStory(null, null, testId);
 
 app.listen(3000);
