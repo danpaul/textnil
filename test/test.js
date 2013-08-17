@@ -160,22 +160,22 @@ async.series
 	//get full node tree
 	function(callback)
 	{
-console.log(story);
+//console.log(story);
 // console.log(story.root);
 // console.log(rootPostNode);
-		story.buildTree(story.root, function(err, record)
+		story.buildTree(story, function(err, record)
 		{
 			if(err){throw err
 			}else{
-//console.log(record);
-				assert.equal(record.children.length, 2);
-				_.each(record.children, function(child)
-				{
-					if(child.children.length > 0)
-					{
-						assert.equal(child.children[0].self.equals(childNode02._id), true);
-					}
-				})
+console.log(record);
+				// assert.equal(record.children.length, 2);
+				// _.each(record.children, function(child)
+				// {
+				// 	if(child.children.length > 0)
+				// 	{
+				// 		assert.equal(child.children[0].self.equals(childNode02._id), true);
+				// 	}
+				// })
 			}
 		});
 	}

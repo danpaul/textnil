@@ -23,37 +23,3 @@ var postSchema = mongoose.Schema
 });
 
 var PostModel = exports.model = mongoose.model('post', postSchema);
-
-// postSchema.methods.saveAsChild = function(parentId, cb)
-// {
-// 	var self = this;
-
-// 	async.series
-// 	([
-// 		function(callback)
-// 		{
-// 			self.parent = parentId;
-// 			self.save(function(err, record)
-// 			{
-// 				if(err)
-// 				{
-// 					callback(err);
-// 					return;
-// 				}else{
-// 					callback();
-// 				}
-// 			});
-// 		},
-// 		function(callback)
-// 		{
-// 			PostModel.findOne({_id: parentId}, function(err, record){
-// 				if(err){console.log(err)
-// 				}else{
-// 					;
-// 				}
-// 			});
-// 		}
-// 	],
-// 		function(err){if(err)throw(err)}
-// 	);
-// }

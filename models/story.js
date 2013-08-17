@@ -71,7 +71,16 @@ storySchema.statics.traverseTree = traverseTree = function(tree, callbackIn)
 	}
 }
 
-var buildTree = storySchema.methods.buildTree = function(startNodeId, callback)
+function makeTreeNode(node)
+{
+	return(
+	{
+		self: node,
+		children: []
+	});
+}
+
+var buildTree = storySchema.methods.buildTree = function(startNode, callback)
 {
 	var self = this;
 	var searchDepth = config.defaulSearchDepth;//Infinity;
@@ -84,34 +93,29 @@ var buildTree = storySchema.methods.buildTree = function(startNodeId, callback)
 		var callback = arguments[2];
 	}
 
-	function makeTreeNode(nodeId)
-	{
-		return(
-		{
-			self: nodeId,
-			children: []
-		});
-	}
-
 	function buildNodeTree(treeNodeArray, depth, callback)
 	{
+
+console.log(self._id)
+
 		async.series
 		([
 			function(callback)
 			{
-				if(treeNodeArray === 0 || depth >= searchDepth)
+				if(treeNodeArray.length === 0 || depth >= searchDepth)
 				{
 					callback();
 				}else{
 					async.forEachSeries(treeNodeArray, function(treeNode, callback)
 					{
-						PostNode.find({story: self._id, parent: treeNode.self}, function(err, records)
+
+						PostNode.find({story: self._id, parent: treeNode._id}, function(err, records)
 						{
 							if(err){console.log(err); callback();
 							}else{
 								_.each(records, function(record)
 								{
-									treeNode.children.push(makeTreeNode(record._id));
+									treeNode.children.push(makeTreeNode(record));
 								})
 								buildNodeTree(treeNode.children, depth + 1, callback);
 							}
@@ -120,14 +124,13 @@ var buildTree = storySchema.methods.buildTree = function(startNodeId, callback)
 				}
 			}
 		],
-
 		function()
 		{
 			callback(null, root);
 		});
 	}
 
-	var root = {self: startNodeId, children: []}
+	var root = {self: startNode, children: []}
 	var rootarray = [root];
 	buildNodeTree(rootarray, 0, callback);
 }

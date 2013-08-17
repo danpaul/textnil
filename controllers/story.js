@@ -26,10 +26,10 @@ exports.getStory = function(req, res, storyId)
 							postIds.push(record);
 						}
 					});
-console.log(postIds);
+//console.log(postIds);
 					PostNode.where('_id').in(postIds).exec(function(err, r)
 					{
-						console.log(r);
+//						console.log(r);
 					});
 
 //					console.log(postIds);
