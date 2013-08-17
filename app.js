@@ -40,16 +40,23 @@ app.get('*', function (req, res)
 var storyController = require(config.controllers.story);
 
 var testStoryId = '520fcf87eea1c9380d000003';
-storyController.getTreeFromStoryId(testStoryId, function(err, tree)
+
+storyController.getStoryTreeWithPosts(testStoryId, function(err, tree)
 {
-	if(err){console.log(err)
-	}else{
-		storyController.getTreePosts(tree, function(err, data)
-		{
-			console.log(data);
-		});
-		//console.log(record);
-	}
+	console.log(tree);
+
 });
+
+// storyController.getTreeFromStoryIdWithData(testStoryId, function(err, tree)
+// {
+// 	if(err){console.log(err)
+// 	}else{
+// 		storyController.getTreePosts(tree, function(err, data)
+// 		{
+// 			console.log(data);
+// 		});
+// 		//console.log(record);
+// 	}
+// });
 
 app.listen(3000);

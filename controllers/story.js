@@ -7,26 +7,35 @@ var PostNode = require(config.models.postNode).model;
 
 /*
 	Builds a tree of postNodes starting from story's root to depth specified in 
-		`config.defaultsearchDepth`.
+		`config.defaultsearchDepth`. Passes result to `callback(err, record)`.
 */
-exports.getTreeFromStoryId = function(storyId, callback)
+var getStoryTree = exports.getStoryTree = function(storyId, callback)
 {
 	Story.findOne({'_id': storyId}, function(err, story)
 	{
 		PostNode.findOne({'_id': story.root}, function(err, postNode)
 		{
-			if(err){console.log(err)
+			if(err){callback(err);
 			}else{
-				Story.buildTree(postNode, function(err, tree)
-				{
-					callback(err, tree);
-				})
+				getTree(postNode, callback);
 			}
 		});
 	});
 }
 
-exports.getTreePosts = function(tree, callback)
+/*
+	Builds a tree of postNodes starting from `startPostNode` to depth specified in 
+		`config.defaultsearchDepth`. Passes result to `callback(err, record)`.
+*/
+var getTree = exports.getTree = function(startPostNode, callback)
+{
+	Story.buildTree(startPostNode, function(err, tree)
+	{
+		callback(err, tree);
+	});
+}
+
+var getTreePosts = exports.getTreePosts = function(tree, callback)
 {
 	var postIds = [];
 	Story.traverseTree(tree, function(err, record)
@@ -41,3 +50,23 @@ exports.getTreePosts = function(tree, callback)
 		callback(err, posts);
 	});
 }
+
+exports.getStoryTreeWithPosts = function(storyId, callback)
+{
+	var results = {};
+	getStoryTree(storyId, function(err, tree)
+	{
+		if(err){callback(err)
+		}else{
+			results.tree = tree;
+			getTreePosts(tree, function(err, data)
+			{
+				if(err){callback(err);
+				}else{
+					results.data = data;
+					callback(null, results);
+				}
+			})
+		}
+	});
+};
