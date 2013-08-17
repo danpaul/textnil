@@ -28,8 +28,8 @@ console.log(req.body.text);
 app.get('/story/:id', function (req, res)
 {
   //require(controller.story).getStory(req, res, req.params.id);
-  var testId = '520e73b7c6b390016f000003';
-  require(controller.story).getStory(req, res, testId);
+  //var testId = '520e73b7c6b390016f000003';
+  //require(controller.story).getStory(req, res, testId);
 });
 
 app.get('*', function (req, res)
@@ -37,7 +37,19 @@ app.get('*', function (req, res)
   res.render('index');
 });
 
-// var testId = '520e73b7c6b390016f000003';
-// require(config.controllers.story).getStory(null, null, testId);
+var storyController = require(config.controllers.story);
+
+var testStoryId = '520fcf87eea1c9380d000003';
+storyController.getTreeFromStoryId(testStoryId, function(err, tree)
+{
+	if(err){console.log(err)
+	}else{
+		storyController.getTreePosts(tree, function(err, data)
+		{
+			console.log(data);
+		});
+		//console.log(record);
+	}
+});
 
 app.listen(3000);

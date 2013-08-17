@@ -80,7 +80,17 @@ function makeTreeNode(node)
 	});
 }
 
-var buildTree = storySchema.methods.buildTree = function(startNode, callback)
+
+/*
+	`startNode` is a `PostNode` object. This function will build a tree of `PostNode`
+		objects starting from `startNode` and then pass to a function that accepts
+		2 arguments of the form `(err, record)` (standarnd mongoose signature). The
+		tree is passed as the record.
+	If 3 arguments are passed, the second argument will be the depth. If only 2 are 
+		passed, the depth specified win the `config.js` will be searched.   
+*/
+
+var buildTree = storySchema.statics.buildTree = storySchema.methods.buildTree = function(startNode, callback)
 {
 	var self = this;
 	var searchDepth = config.defaulSearchDepth;
@@ -101,17 +111,14 @@ var buildTree = storySchema.methods.buildTree = function(startNode, callback)
 			{
 				if(treeNodeArray.length === 0 || depth >= searchDepth)
 				{
-//console.log('empty');
 					callback();
 				}else{
 					async.forEachSeries(treeNodeArray, function(treeNode, callback)
 					{
-//console.log(treeNode);
 						PostNode.find({story: treeNode.self.story, parent: treeNode.self._id}, function(err, records)
 						{
 							if(err){console.log(err); callback();
 							}else{
-//console.log(records);								
 								_.each(records, function(record)
 								{
 									treeNode.children.push(makeTreeNode(record));
@@ -129,96 +136,8 @@ var buildTree = storySchema.methods.buildTree = function(startNode, callback)
 		});
 	}
 
-//console.log(startNode);
 	var root = {self: startNode, children: []}
 	buildNodeTree([root], 0, callback);
-
-	// var root = {self: startNode, children: []}
-	// var rootarray = [root];
-	// buildNodeTree(rootarray, 0, callback);
 }
 
 var Story = exports.model = mongoose.model('story', storySchema);
-
-
-
-
-
-// var buildTree = storySchema.methods.buildTree = function(startNode, callback)
-// {
-
-// console.log(startNode);
-// 	var self = this;
-// 	var searchDepth = config.defaulSearchDepth;//Infinity;
-// 	var currentDepth = 0;
-// 	var callback = arguments[1];
-	
-// 	if(arguments.length === 3)
-// 	{
-// 		searchDepth = arguments[1];
-// 		var callback = arguments[2];
-// 	}
-
-// 	function buildNodeTree(treeNodeArray, depth, callback)
-// 	{
-
-// //console.log(self._id)
-
-// 		async.series
-// 		([
-// 			function(callback)
-// 			{
-// 				if(treeNodeArray.length === 0 || depth >= searchDepth)
-// 				{
-// 					callback();
-// 				}else{
-// 					async.forEachSeries(treeNodeArray, function(treeNode, callback)
-// 					{
-
-// 						PostNode.find({story: self._id, parent: treeNode._id}, function(err, records)
-// 						{
-// 							if(err){console.log(err); callback();
-// 							}else{
-// 								_.each(records, function(record)
-// 								{
-// 									treeNode.children.push(makeTreeNode(record));
-// 								})
-// 								buildNodeTree(treeNode.children, depth + 1, callback);
-// 							}
-// 						});
-// 					},function(){callback()});
-// 				}
-// 			}
-// 		],
-// 		function()
-// 		{
-// 			callback(null, root);
-// 		});
-// 	}
-
-// // 	var root = {}
-// // 	var rootarray = [];	
-// // 	async.series
-// // 	([
-// // 		function(callbackLocal)
-// // 		{
-// // 			PostNode.findOne({'_id': self.root}, function(err, record)
-// // 			{
-// // 				if(err){ console.log(err)
-// // 				}else{
-// // 					root.self = record;
-// // 					root.children = [];
-// // //console.log(record);
-// // 					buildNodeTree(rootarray, 0, callbackLocal);
-// // 				}
-// // 			});
-// // 		}
-// // 	], function()
-// // 	{
-// // 		callback(null, root)
-// // 	});
-
-// 	var root = {self: startNode, children: []}
-// 	var rootarray = [root];
-// 	buildNodeTree(rootarray, 0, callback);
-// }
