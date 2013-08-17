@@ -28,13 +28,16 @@ console.log(req.body.text);
 app.get('/story/:id', function (req, res)
 {
   //require(controller.story).getStory(req, res, req.params.id);
-  var test_id = '520e73b7c6b390016f000003';
-  require(controller.story).getStory(req, res, test_id);
+  var testId = '520e73b7c6b390016f000003';
+  require(controller.story).getStory(req, res, testId);
 });
 
 app.get('*', function (req, res)
 {
   res.render('index');
 });
+
+var testId = '520e73b7c6b390016f000003';
+require(config.controllers.story).getStory(null, null, testId);
 
 app.listen(3000);

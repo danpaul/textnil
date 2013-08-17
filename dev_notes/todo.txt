@@ -1,3 +1,7 @@
 confirm this is correct in post.js: children: {type: [mongoose.Schema.Types.ObjectId], index: true},
 
 perform input validation on all requests
+
+check final callback in function buildNodeTree(treeNodeArray, depth, callback). how do we handle erros w/in async?
+
+remove nested functions in story.js build tree?
