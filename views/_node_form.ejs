@@ -1,4 +1,8 @@
 <script type="text/javascript">
+
+var storyId = '520fcf87eea1c9380d000003';
+var data = {};
+
 	function getStory(storyId, callback){
 		$.ajax({
 			type: "GET",  
@@ -6,8 +10,10 @@
 			success: callback
 		});		
 	}
+
+
 	$(document).ready(function(){
-		getStory(1, function(){console.log("success")});	
+		getStory(storyId, function(){console.log("success")});	
 		$("#add_node_button").click(function(){
 			$.ajax({
   				type: "POST",  
