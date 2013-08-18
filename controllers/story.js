@@ -35,6 +35,17 @@ var getTree = exports.getTree = function(startPostNode, callback)
 	});
 }
 
+var getTreeFromPostId = exports.getTreeFromPostId = function(startPostNodeId, callback)
+{
+	PostNode.findOne({'_id': startPostNodeId}, function(err, postNode)
+	{
+		if(err){callback(err);
+		}else{
+			getTree(postNode, callback);
+		}
+	})
+}
+
 var getTreePosts = exports.getTreePosts = function(tree, callback)
 {
 	var postIds = [];

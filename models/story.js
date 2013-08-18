@@ -49,11 +49,9 @@ storySchema.statics.traverseTree = traverseTree = function(tree, callbackIn)
 {
 	if(tree.self != undefined)
 	{
-//console.log(tree.self);
 		callbackIn(null, tree.self);
 		if(tree.children.length != 0)
 		{
-//console.log(tree.children);
 			async.forEachSeries(tree.children, function(child, callback)
 			{
 				traverseTree(child, function(err, record){

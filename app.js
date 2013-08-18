@@ -20,20 +20,22 @@ app.set('view engine', 'ejs');
 
 app.locals.title = 'textNIL';
 
-app.post('/api/addnode', function (req, res)
-{
-console.log(req.body.text);
-  res.send('in post');
-});
-
 app.get('/api/story/:id', function (req, res)
 {
 
-// console.log(req.params.id);
-// res.send('foo');
-//var testStoryId = '520fcf87eea1c9380d000003';
-
 	storyController.getStoryTreeWithPosts(req.params.id, function(err, tree)
+	{
+		if(err){console.log(err);
+		}else{
+			res.send(tree);
+		}
+	});
+});
+
+app.get('/api/node/:id', function (req, res)
+{
+
+	storyController.getTreeFromPostId(req.params.id, function(err, tree)
 	{
 		if(err){console.log(err);
 		}else{
@@ -46,7 +48,5 @@ app.get('*', function (req, res)
 {
   res.render('index');
 });
-
-
 
 app.listen(3000);
