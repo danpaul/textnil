@@ -13,10 +13,6 @@ var config = require('../config');
 var Post = require(config.models.post).model;
 var PostNode = require(config.models.postNode).model;
 
-
-var foo = {};
-foo.bar = 'baz';
-
 var storySchema = mongoose.Schema
 ({
 	author: {type: mongoose.Schema.Types.ObjectId},

@@ -1,3 +1,10 @@
+/*
+
+	Note: main front-end app is in public/textnil.js
+
+*/
+
+
 var mongoose = require('mongoose'),
 	_ = require('underscore'),
  	async = require('async'),
@@ -22,7 +29,6 @@ app.locals.title = 'textNIL';
 
 app.get('/api/story/:id', function (req, res)
 {
-
 	storyController.getStoryTreeWithPosts(req.params.id, function(err, tree)
 	{
 		if(err){console.log(err);
@@ -34,7 +40,6 @@ app.get('/api/story/:id', function (req, res)
 
 app.get('/api/node/:id', function (req, res)
 {
-
 	storyController.getTreeFromPostId(req.params.id, function(err, tree)
 	{
 		if(err){console.log(err);

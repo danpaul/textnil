@@ -1,5 +1,15 @@
 (function(){
 
+/*
+
+  Todo:
+    add list of posts
+    add form
+    add abillity to add to posts
+    add abillity to link to posts
+
+*/
+
 //------------------------------------------------------------------------------
 // debugging  
 
@@ -77,7 +87,8 @@ textNil.getPostTreeData = function(tree)
   //if not, request them
   //update dictionary
 }
-  
+
+
 //------------------------------------------------------------------------------
 // routing
 
@@ -107,38 +118,34 @@ $(document.body).append(JSON.stringify(results));
 $(document.body).append(JSON.stringify(results));
       })
     }
-
   });
 
   new textNil.router;
   Backbone.history.start({pushState: true});
 
-
 })();
 
+// $(document).ready(function(){
+//   getStory(storyId, function(){console.log("success")});  
+//   $("#add_node_button").click(function(){
+//     $.ajax({
+//         type: "POST",  
+//         url: "/addnode",  
+//         data: {text: $('#new_node_text').val()},
+//         success: function(){
+//         }
+//     });
+//   });
+// });
 
 
-  // $(document).ready(function(){
-  //   getStory(storyId, function(){console.log("success")});  
-  //   $("#add_node_button").click(function(){
-  //     $.ajax({
-  //         type: "POST",  
-  //         url: "/addnode",  
-  //         data: {text: $('#new_node_text').val()},
-  //         success: function(){
-  //         }
-  //     });
-  //   });
-  // });
-
-
- // window.textNil = {
- //    models: {},
- //    collectoins: {},
- //    views: {},
- //    router: {},
- //    posts: {}
- //  };
+// window.textNil = {
+//    models: {},
+//    collectoins: {},
+//    views: {},
+//    router: {},
+//    posts: {}
+//  };
 
 
 //   textNil.models.post = Backbone.Model.extend({
