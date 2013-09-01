@@ -15,6 +15,7 @@
 
   var storyId = '520fcf87eea1c9380d000003';
   var rootPost = '520fcf87eea1c9380d000004';
+  var p = console.log;
 
 //------------------------------------------------------------------------------
 // variables
@@ -31,18 +32,33 @@
     to each node. It applies the callback to nodes in this order: self, child
     silbling.
 */
-textNil.traverseTree = function(tree, callback)
-{
-  if(tree.self != undefined)
-  {
+textNil.traverseTree = function(tree, callback){
+  if(tree.self != undefined){
     callback(tree.self);
-    if(tree.children.length != 0)
-    {
-      _.each(tree.children, function(child)
-      {
+    if(tree.children.length != 0){
+      _.each(tree.children, function(child){
         textNil.traverseTree(child, callback);
       });
     }
+  }
+}
+
+textNil.updatePostDictionary = function(postArray){
+  _.each(postArray, function(post){
+    if(!textNil.posts.hasOwnProperty(post._id)){
+      textNil.posts[post._id] = {content: post.content, author: post.author};
+    }
+  });
+}
+
+
+textNil.buildStoryList = function(treeNode, elementRoot){
+  $(elementRoot).append('<li>' + textNil.posts[treeNode.self.post].content + '</li>');
+  if(treeNode.children.length != 0){
+    var childList = $('<ul>').appendTo(elementRoot);
+    _.each(treeNode.children, function(child){
+      textNil.buildStoryList(child, childList);
+    });
   }
 }
 
@@ -57,13 +73,12 @@ textNil.traverseTree = function(tree, callback)
     });
   }
 
-
   textNil.getStoryRoot = function(storyId, callback){
     $.ajax({
       type: "GET",  
       url: "/api/story/" + storyId,
       success: callback
-    });   
+    });
   }
 
 //------------------------------------------------------------------------------
@@ -76,6 +91,7 @@ textNil.getPostTreeData = function(tree)
   //check if postsIds are stored
   textNil.traverseTree(tree, function(treeNode)
   {
+//console.log(foo);
     if(!_.has(textNil.posts, treeNode.post))
     {
       postsToQuery.push(treeNode.post)
@@ -88,7 +104,6 @@ textNil.getPostTreeData = function(tree)
   //update dictionary
 }
 
-
 //------------------------------------------------------------------------------
 // routing
 
@@ -100,23 +115,23 @@ textNil.getPostTreeData = function(tree)
     },
 
     index: function(){
-      ///
+      $(document.body).append('<p>hello</p>');
     },
     node: function(nodeId)
     {
       textNil.getNode(nodeId, function(results)
       {
-textNil.getPostTreeData(results);
-
-$(document.body).append(JSON.stringify(results));
+        textNil.getPostTreeData(results);
+        //$(document.body).append(JSON.stringify(results));
       });
     },
     story: function(storyId)
     {
-      textNil.getStoryRoot(storyId, function(results)
-      {
-$(document.body).append(JSON.stringify(results));
-      })
+      textNil.getStoryRoot(storyId, function(results){
+        textNil.updatePostDictionary(results.data);
+        var rootList = $('<ul>').appendTo('#story_root');
+        textNil.buildStoryList(results.tree, rootList);
+      });
     }
   });
 
@@ -125,94 +140,3 @@ $(document.body).append(JSON.stringify(results));
 
 })();
 
-// $(document).ready(function(){
-//   getStory(storyId, function(){console.log("success")});  
-//   $("#add_node_button").click(function(){
-//     $.ajax({
-//         type: "POST",  
-//         url: "/addnode",  
-//         data: {text: $('#new_node_text').val()},
-//         success: function(){
-//         }
-//     });
-//   });
-// });
-
-
-// window.textNil = {
-//    models: {},
-//    collectoins: {},
-//    views: {},
-//    router: {},
-//    posts: {}
-//  };
-
-
-//   textNil.models.post = Backbone.Model.extend({
-
-//     defaults: {
-//       title: 'Dan post',
-//       text: 'foo'
-//     },
-
-//     url: 'api/post',
-
-//     working: function(){
-//       return this.get('title') + ' is working';
-//     },
-
-//     validate: function(attributes){
-//       if(attributes.text == ''){
-//         return 'Text can not be blank.';
-//       }
-//     }
-
-//   });
-
-//   textNil.views.post = Backbone.View.extend(
-//   {
-//     el: $('#form'),
-
-//     initialize: function()
-//     {
-//       this.render();
-//     },
-
-//     render: function()
-//     {
-//       var variables = {postText: "some post text"};
-//       var template = _.template( $("#form_template").html(), variables );
-//       this.$el.html(template);
-//       //this.$el.html(this.model.get('title') + ' ' + this.model.get('text'));
-//     },
-
-//     events:
-//     {
-//       //'submit input[type=submit]': 'add'
-//       'click #submitButton': 'add'
-//     },
-
-//     add: function()
-//     {
-//       var setResults = this.model.set('text', $('#text').val());
-//       //var text = $('#text').val();
-//       if(this.model.isValid())
-//       {
-//         this.model.save();
-//         console.log("valid!");
-//       }else{
-//         console.log("not valid!");
-//       }
-//       console.log(this.model.isValid());
-//     }
-
-
-//   });
-
-//   textNil.postModel = new textNil.models.post;
-//   textNil.postView = new textNil.views.post({model: textNil.postModel});
-
-//   new textNil.router;
-//   Backbone.history.start({pushState: true});
-
-// })();

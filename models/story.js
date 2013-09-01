@@ -81,7 +81,7 @@ function makeTreeNode(node)
 		2 arguments of the form `(err, record)` (standarnd mongoose signature). The
 		tree is passed as the record.
 	If 3 arguments are passed, the second argument will be the depth. If only 2 are 
-		passed, the depth specified win the `config.js` will be searched.   
+		passed, the depth specified in the `config.js` will be searched.   
 */
 
 var buildTree = storySchema.statics.buildTree = storySchema.methods.buildTree = function(startNode, callback)

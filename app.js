@@ -27,6 +27,11 @@ app.set('view engine', 'ejs');
 
 app.locals.title = 'textNIL';
 
+/*
+	Takes a story id.
+	Returns an object two properties (`tree` and `data`). `tree` defines the
+	hierachical structure of the story and its nods. `data` contains the 
+*/
 app.get('/api/story/:id', function (req, res)
 {
 	storyController.getStoryTreeWithPosts(req.params.id, function(err, tree)
