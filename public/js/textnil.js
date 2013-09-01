@@ -24,7 +24,24 @@
   textNil.posts = {};
 
 //------------------------------------------------------------------------------
-// Helpers
+// templates
+
+textNil.postNodeTemplate = _.template(
+    // '<li><i class="foundicon-plus"></i></li>' +
+    '<li>'+
+      'content: <%= content %><br />'+
+      'author:<%= author %><br />' +
+      'id:<%= author %>' +
+      '<i class="foundicon-plus"></i>' +
+      '<form>' +
+        //'<label>Some label</label>' +
+        '<input type="text" placeholder="placeholder" />' +
+      '</form>' +
+    '</li>'
+  );
+
+//------------------------------------------------------------------------------
+// helpers
 
 /*
   This function is shared with the server side (in story model file).
@@ -53,27 +70,23 @@ textNil.updatePostDictionary = function(postArray){
 
 textNil.buildStoryList = function(treeNode, elementRoot){
   
+  var post = textNil.posts[treeNode.self.post];
+  var postObject = {id: treeNode.self.post,
+               content: post.content,
+                author: post.author};
+
   if(treeNode.children.length != 0){
-    var newList = $('<li>' + textNil.posts[treeNode.self.post].content + '</li>').appendTo(elementRoot);
-    var childList = $('<ul>').appendTo(newList);
+    var childList = $('<ul>').appendTo(
+                    $(textNil.postNodeTemplate(postObject))
+                    .appendTo(elementRoot));
     _.each(treeNode.children, function(child){
       textNil.buildStoryList(child, childList);
     });
   }else{
-    $(elementRoot).append('<li>' + textNil.posts[treeNode.self.post].content + '</li>');
+    $(elementRoot).append(textNil.postNodeTemplate(postObject));
   }
+
 }
-
-
-// textNil.buildStoryList = function(treeNode, elementRoot){
-//   $(elementRoot).append('<li>' + textNil.posts[treeNode.self.post].content + '</li>');
-//   if(treeNode.children.length != 0){
-//     var childList = $('<ul>').appendTo(elementRoot);
-//     _.each(treeNode.children, function(child){
-//       textNil.buildStoryList(child, childList);
-//     });
-//   }
-// }
 
 //------------------------------------------------------------------------------
 // Ajax
