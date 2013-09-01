@@ -51,16 +51,29 @@ textNil.updatePostDictionary = function(postArray){
   });
 }
 
-
 textNil.buildStoryList = function(treeNode, elementRoot){
-  $(elementRoot).append('<li>' + textNil.posts[treeNode.self.post].content + '</li>');
+  
   if(treeNode.children.length != 0){
-    var childList = $('<ul>').appendTo(elementRoot);
+    var newList = $('<li>' + textNil.posts[treeNode.self.post].content + '</li>').appendTo(elementRoot);
+    var childList = $('<ul>').appendTo(newList);
     _.each(treeNode.children, function(child){
       textNil.buildStoryList(child, childList);
     });
+  }else{
+    $(elementRoot).append('<li>' + textNil.posts[treeNode.self.post].content + '</li>');
   }
 }
+
+
+// textNil.buildStoryList = function(treeNode, elementRoot){
+//   $(elementRoot).append('<li>' + textNil.posts[treeNode.self.post].content + '</li>');
+//   if(treeNode.children.length != 0){
+//     var childList = $('<ul>').appendTo(elementRoot);
+//     _.each(treeNode.children, function(child){
+//       textNil.buildStoryList(child, childList);
+//     });
+//   }
+// }
 
 //------------------------------------------------------------------------------
 // Ajax
@@ -129,7 +142,7 @@ textNil.getPostTreeData = function(tree)
     {
       textNil.getStoryRoot(storyId, function(results){
         textNil.updatePostDictionary(results.data);
-        var rootList = $('<ul>').appendTo('#story_root');
+        var rootList = $('<ul class="disc">').appendTo('#story_root');
         textNil.buildStoryList(results.tree, rootList);
       });
     }
