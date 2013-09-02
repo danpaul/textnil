@@ -16,6 +16,7 @@ var app = exports.app = express();
 var config = require('./config');
 var controller = config.controllers;
 var storyController = require(config.controllers.story);
+var postNodeController = require(config.controllers.postNode);
 
 mongoose.connect(config.dbURI);
 
@@ -56,6 +57,10 @@ app.get('/api/node/:id', function (req, res)
 
 app.post('/api/node', function (req, res)
 {
+	postNodeController.insertNewPost(req.body);
+
+//console.log(req.body);
+
 	res.send('success');
 	// storyController.getTreeFromPostId(req.params.id, function(err, tree)
 	// {

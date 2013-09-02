@@ -5,6 +5,7 @@ var Story = require(config.models.story).model;
 var Post = require(config.models.post).model;
 var PostNode = require(config.models.postNode).model;
 
+
 /*
 	Builds a tree of postNodes starting from story's root to depth specified in 
 		`config.defaultsearchDepth`. Passes result to `callback(err, record)`.

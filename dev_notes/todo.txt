@@ -1,3 +1,5 @@
+validate everything!
+
 handle badly formed requests/report errors
 
 confirm this is correct in post.js: children: {type: [mongoose.Schema.Types.ObjectId], index: true},

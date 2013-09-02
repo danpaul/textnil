@@ -24,17 +24,17 @@ var postNodeSchema = mongoose.Schema
 	depth: {type: Number, default: 0, index: true}
 }).index({story: 1, parent: 1});
 
-//takes 
-postNodeSchema.methods.insertChild = function(parent, child)
-{
-	async.series
-	([
-		function(callback)
-		{
-			callback();
-		}
-		//add nodes to story
-	], function(err){if(err) throw err})
-}
+// //takes 
+// postNodeSchema.methods.insertChild = function(parent, child)
+// {
+// 	async.series
+// 	([
+// 		function(callback)
+// 		{
+// 			callback();
+// 		}
+// 		//add nodes to story
+// 	], function(err){if(err) throw err})
+// }
 
 var PostNode = exports.model = mongoose.model('post_node', postNodeSchema);

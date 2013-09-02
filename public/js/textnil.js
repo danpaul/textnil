@@ -10,18 +10,23 @@
 
 */
 
-//------------------------------------------------------------------------------
-// debugging  
 
-  var storyId = '520fcf87eea1c9380d000003';
-  var rootPost = '520fcf87eea1c9380d000004';
-  var p = console.log;
 
 //------------------------------------------------------------------------------
 // variables
 
   var textNil = {};
   textNil.posts = {};
+  textNil.currentStory = '';
+  textNil.author = '';
+
+//------------------------------------------------------------------------------
+// debugging  
+
+  var storyId = '520fcf87eea1c9380d000003';
+  var rootPost = '520fcf87eea1c9380d000004';
+  textNil.author = '520fcf87eea1c9380d000001';
+  var p = console.log;
 
 //------------------------------------------------------------------------------
 // templates
@@ -31,11 +36,12 @@ textNil.postNodeTemplate = _.template(
     '<li>'+
       'content: <%= content %><br />'+
       'author:<%= author %><br />' +
-      'id:<%= author %>' +
+      //'postNodeId:<%= author %>' +
       '<i class="foundicon-plus"></i>' +
       '<form class="newPostForm">' +
-        '<input type="hidden" name="parentId" value="<%= id %>">' +
-        '<textarea name="newPost" rows="10"></textarea>' +
+        //'<input type="hidden" name="parentId" value="<%= parentId %>">' +
+        '<input type="hidden" name="postNodeId" value="<%= postNodeId %>">' +
+        '<textarea name="content" rows="10"></textarea>' +
         '<a class="tiny button secondary newPostSubmit">submit</a>' +
       '</form>' +
     '</li>'
@@ -69,12 +75,11 @@ textNil.updatePostDictionary = function(postArray){
   });
 }
 
-textNil.buildStoryList = function(treeNode, elementRoot){
-  
+textNil.buildStoryList = function(treeNode, elementRoot){ 
   var post = textNil.posts[treeNode.self.post];
-  var postObject = {id: treeNode.self.post,
-               content: post.content,
-                author: post.author};
+  var postObject = {postNodeId: treeNode.self._id,
+                       content: post.content,
+                        author: post.author};
 
   if(treeNode.children.length != 0){
     var childList = $('<ul>').appendTo(
@@ -109,10 +114,11 @@ textNil.getStoryRoot = function(storyId, callback){
 }
 
 textNil.addNode = function(newNodeObject, callback){
+p(newNodeObject);
   $.ajax({
     type: "POST",  
-    url: "bin/process.php",
-    data: dataString,
+    url: "/api/node",
+    data: newNodeObject,
     success: callback
   });
 }
@@ -136,7 +142,7 @@ textNil.getPostTreeData = function(tree)
   });
 
   postsToQuery = _.uniq(postsToQuery);
-  console.log(postsToQuery);
+  //console.log(postsToQuery);
   //if not, request them
   //update dictionary
 }
@@ -155,16 +161,14 @@ $(document).on('click', '.foundicon-plus', function(){
 
 $(document).on('click', '.newPostSubmit', function(){
 
-  //var form = $(this).siblings();
-p($(this).siblings('[name="parentId"]').attr('value'));
-p($(this).siblings('textarea').val());
-
-  // var form = $(this).siblings('.newPostForm');
-  // if(form.is(':visible')){
-  //   form.hide();
-  // }else{
-  //   form.show();
-  // }
+  textNil.addNode({
+    storyId: textNil.currentStory,
+    author: textNil.author,
+    postNodeId: $(this).siblings('[name="postNodeId"]').attr('value'),
+    content: $(this).siblings('textarea').val()
+  },function(err, record){
+    console.log('success');
+  });
 });
 
 //------------------------------------------------------------------------------
@@ -191,10 +195,12 @@ p($(this).siblings('textarea').val());
     story: function(storyId)
     {
       textNil.getStoryRoot(storyId, function(results){
+//console.log(results);
         textNil.updatePostDictionary(results.data);
         var rootList = $('<ul class="disc">').appendTo('#story_root');
         textNil.buildStoryList(results.tree, rootList);
       });
+      textNil.currentStory = storyId;
     }
   });
 
