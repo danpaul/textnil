@@ -1,0 +1,11 @@
+.newPostForm{
+	display: none;
+}
+
+.newPostSubmit{
+	float: right;
+}
+
+li {
+	clear: right;
+}

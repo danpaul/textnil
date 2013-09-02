@@ -33,9 +33,10 @@ textNil.postNodeTemplate = _.template(
       'author:<%= author %><br />' +
       'id:<%= author %>' +
       '<i class="foundicon-plus"></i>' +
-      '<form>' +
-        //'<label>Some label</label>' +
-        '<input type="text" placeholder="placeholder" />' +
+      '<form class="newPostForm">' +
+        '<input type="hidden" name="parentId" value="<%= id %>">' +
+        '<textarea name="newPost" rows="10"></textarea>' +
+        '<a class="tiny button secondary newPostSubmit">submit</a>' +
       '</form>' +
     '</li>'
   );
@@ -79,37 +80,48 @@ textNil.buildStoryList = function(treeNode, elementRoot){
     var childList = $('<ul>').appendTo(
                     $(textNil.postNodeTemplate(postObject))
                     .appendTo(elementRoot));
+
     _.each(treeNode.children, function(child){
       textNil.buildStoryList(child, childList);
     });
   }else{
     $(elementRoot).append(textNil.postNodeTemplate(postObject));
   }
-
 }
 
 //------------------------------------------------------------------------------
 // Ajax
 
-  textNil.getNode = function(nodeId, callback){
-    $.ajax({
-      type: "GET",  
-      url: "/api/node/" + nodeId,
-      success: callback
-    });
-  }
+textNil.getNode = function(nodeId, callback){
+  $.ajax({
+    type: "GET",  
+    url: "/api/node/" + nodeId,
+    success: callback
+  });
+}
 
-  textNil.getStoryRoot = function(storyId, callback){
-    $.ajax({
-      type: "GET",  
-      url: "/api/story/" + storyId,
-      success: callback
-    });
-  }
+textNil.getStoryRoot = function(storyId, callback){
+  $.ajax({
+    type: "GET",  
+    url: "/api/story/" + storyId,
+    success: callback
+  });
+}
+
+textNil.addNode = function(newNodeObject, callback){
+  $.ajax({
+    type: "POST",  
+    url: "bin/process.php",
+    data: dataString,
+    success: callback
+  });
+}
 
 //------------------------------------------------------------------------------
 // data handling
 
+
+//IS THIS BEING USED???
 textNil.getPostTreeData = function(tree)
 {
   var postsToQuery = [];
@@ -117,7 +129,6 @@ textNil.getPostTreeData = function(tree)
   //check if postsIds are stored
   textNil.traverseTree(tree, function(treeNode)
   {
-//console.log(foo);
     if(!_.has(textNil.posts, treeNode.post))
     {
       postsToQuery.push(treeNode.post)
@@ -129,6 +140,32 @@ textNil.getPostTreeData = function(tree)
   //if not, request them
   //update dictionary
 }
+
+//------------------------------------------------------------------------------
+// event handling
+
+$(document).on('click', '.foundicon-plus', function(){
+  var form = $(this).siblings('.newPostForm');
+  if(form.is(':visible')){
+    form.hide();
+  }else{
+    form.show();
+  }
+});
+
+$(document).on('click', '.newPostSubmit', function(){
+
+  //var form = $(this).siblings();
+p($(this).siblings('[name="parentId"]').attr('value'));
+p($(this).siblings('textarea').val());
+
+  // var form = $(this).siblings('.newPostForm');
+  // if(form.is(':visible')){
+  //   form.hide();
+  // }else{
+  //   form.show();
+  // }
+});
 
 //------------------------------------------------------------------------------
 // routing

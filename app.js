@@ -54,6 +54,18 @@ app.get('/api/node/:id', function (req, res)
 	});
 });
 
+app.post('/api/node', function (req, res)
+{
+	res.send('success');
+	// storyController.getTreeFromPostId(req.params.id, function(err, tree)
+	// {
+	// 	if(err){console.log(err);
+	// 	}else{
+	// 		res.send(tree);
+	// 	}
+	// });
+});
+
 app.get('*', function (req, res)
 {
   res.render('index');
