@@ -1,3 +1,21 @@
+.editable{
+	editable: true;
+}
+
+.hiddenInput{
+	display: none;
+	min-height: 2.5em;
+}
+
+.newPostInput{
+	background: none repeat scroll 0 0 #F2F2F2;
+    padding: 0.5em;
+}
+/*.editable {
+    background: none repeat scroll 0 0 #F2F2F2;
+    padding: 0.5em;
+}*/
+
 .newPostForm{
 	display: none;
 }

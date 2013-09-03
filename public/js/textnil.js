@@ -31,21 +31,33 @@
 //------------------------------------------------------------------------------
 // templates
 
+
 textNil.postNodeTemplate = _.template(
     // '<li><i class="foundicon-plus"></i></li>' +
     '<li>'+
-      'content: <%= content %><br />'+
-      'author:<%= author %><br />' +
-      //'postNodeId:<%= author %>' +
+      '<%= content %><br />'+
       '<i class="foundicon-plus"></i>' +
-      '<form class="newPostForm">' +
-        //'<input type="hidden" name="parentId" value="<%= parentId %>">' +
-        '<input type="hidden" name="postNodeId" value="<%= postNodeId %>">' +
-        '<textarea name="content" rows="10"></textarea>' +
-        '<a class="tiny button secondary newPostSubmit">submit</a>' +
-      '</form>' +
+      '<div contenteditable="true" class="newPostInput hiddenInput">' +
+' ' +
+//        '<input type="hidden" name="postNodeId" value="<%= postNodeId %>">' +
+//        '<a class="tiny button secondary newPostSubmit">submit</a>' +
+      '</div>' +
     '</li>'
   );
+
+// textNil.postNodeTemplate = _.template(
+//     // '<li><i class="foundicon-plus"></i></li>' +
+//     '<li>'+
+//       'content: <%= content %><br />'+
+//       //'author:<%= author %><br />' +
+//       '<i class="foundicon-plus"></i>' +
+//       '<form class="newPostForm">' +
+//         '<input type="hidden" name="postNodeId" value="<%= postNodeId %>">' +
+//         '<textarea name="content" rows="10"></textarea>' +
+//         '<a class="tiny button secondary newPostSubmit">submit</a>' +
+//       '</form>' +
+//     '</li>'
+//   );
 
 //------------------------------------------------------------------------------
 // helpers
@@ -151,13 +163,22 @@ textNil.getPostTreeData = function(tree)
 // event handling
 
 $(document).on('click', '.foundicon-plus', function(){
-  var form = $(this).siblings('.newPostForm');
-  if(form.is(':visible')){
-    form.hide();
+  var inputDiv = $(this).siblings('.newPostInput');
+  if(inputDiv.is(':visible')){
+    inputDiv.hide();
   }else{
-    form.show();
+    inputDiv.show();
   }
 });
+
+// $(document).on('click', '.foundicon-plus', function(){
+//   var form = $(this).siblings('.newPostForm');
+//   if(form.is(':visible')){
+//     form.hide();
+//   }else{
+//     form.show();
+//   }
+// });
 
 $(document).on('click', '.newPostSubmit', function(){
 

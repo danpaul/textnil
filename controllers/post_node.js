@@ -14,8 +14,6 @@ var PostNode = require(config.models.postNode).model;
 var insertNewPost = exports.insertNewPost = function(nodeObject, callback)
 {
 	//create a new post
-//console.log(nodeObject);
-
 	Post.create({content: nodeObject.content, author: nodeObject.author}, function(err, post){
 		if(err){console.log(err)
 		}else{
@@ -27,32 +25,11 @@ var insertNewPost = exports.insertNewPost = function(nodeObject, callback)
 				story: nodeObject.storyId
 			},function(err, record)
 			{
-				if(err){console.log(err)
+				if(err){ callback(err);
 				}else{
-console.log(record);
+					callback(null, record)
 				}
 			})
-			//console.log(post);
 		}
 	});
 }
-
-/*
-{ story: '520fcf87eea1c9380d000003',
-  author: '520fcf87eea1c9380d000001',
-  postNodeId: '520fcf87eea1c9380d000009',
-  content: 'asdf' }
-{ __v: 0,
-  content: 'asdf',
-  author: 520fcf87eea1c9380d000001,
-  _id: 5225085b8e2366a23f000002 }
-*/
-
-/*
-{ post: 520fcf87eea1c9380d000006,
-  _id: 520fcf87eea1c9380d00000a,
-  __v: 0,
-  depth: 2,
-  parent: 520fcf87eea1c9380d000009,
-  story: 520fcf87eea1c9380d000003 }
-  */
