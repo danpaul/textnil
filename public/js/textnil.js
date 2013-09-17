@@ -37,12 +37,14 @@ textNil.postNodeTemplate = _.template(
     '<li>'+
       '<%= content %><br />'+
       '<i class="foundicon-plus"></i>' +
-      '<div contenteditable="true" class="newPostInput hiddenInput">' +
-' ' +
-//        '<input type="hidden" name="postNodeId" value="<%= postNodeId %>">' +
-//        '<a class="tiny button secondary newPostSubmit">submit</a>' +
+      '<div class="newPostInput">' +
+        '<a class="tiny button secondary">submit</a>' +
+        '<div contenteditable="true" class="newPostInput hiddenInput"></div>' +
       '</div>' +
-    '</li>'
+      '<p>foo</p>' +      
+    '</li>' //+
+    //'<a class="tiny button secondary newPostSubmit">submit</a>'
+
   );
 
 // textNil.postNodeTemplate = _.template(
@@ -164,6 +166,10 @@ textNil.getPostTreeData = function(tree)
 
 $(document).on('click', '.foundicon-plus', function(){
   var inputDiv = $(this).siblings('.newPostInput');
+  //var inputDiv = $(this).children('.newPostInput');
+
+console.log(inputDiv);
+
   if(inputDiv.is(':visible')){
     inputDiv.hide();
   }else{
