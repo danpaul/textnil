@@ -37,10 +37,11 @@ textNil.postNodeTemplate = _.template(
     '<li>'+
       '<%= content %><br />'+
       '<i class="foundicon-plus"></i>' +
-      '<div class="newPostInput">' +
-        '<a class="tiny button secondary">submit</a>' +
-        '<div contenteditable="true" class="newPostInput hiddenInput"></div>' +
-      '</div>' +
+      // '<div class="newPostInput">' +
+      // '<div contenteditable="true">bar</div>' +
+        '<div contenteditable="true" class="editable newPostInput hiddenInput">test</div>' +
+      // '</div>' +
+      '<a class="tiny button secondary newPostSubmit">submit</a>' +
       '<p>foo</p>' +      
     '</li>' //+
     //'<a class="tiny button secondary newPostSubmit">submit</a>'
@@ -145,8 +146,6 @@ p(newNodeObject);
 textNil.getPostTreeData = function(tree)
 {
   var postsToQuery = [];
-  //iterate tree
-  //check if postsIds are stored
   textNil.traverseTree(tree, function(treeNode)
   {
     if(!_.has(textNil.posts, treeNode.post))
@@ -156,9 +155,7 @@ textNil.getPostTreeData = function(tree)
   });
 
   postsToQuery = _.uniq(postsToQuery);
-  //console.log(postsToQuery);
-  //if not, request them
-  //update dictionary
+
 }
 
 //------------------------------------------------------------------------------
@@ -166,9 +163,8 @@ textNil.getPostTreeData = function(tree)
 
 $(document).on('click', '.foundicon-plus', function(){
   var inputDiv = $(this).siblings('.newPostInput');
-  //var inputDiv = $(this).children('.newPostInput');
 
-console.log(inputDiv);
+// console.log(inputDiv);
 
   if(inputDiv.is(':visible')){
     inputDiv.hide();
@@ -177,16 +173,10 @@ console.log(inputDiv);
   }
 });
 
-// $(document).on('click', '.foundicon-plus', function(){
-//   var form = $(this).siblings('.newPostForm');
-//   if(form.is(':visible')){
-//     form.hide();
-//   }else{
-//     form.show();
-//   }
-// });
-
 $(document).on('click', '.newPostSubmit', function(){
+
+// console.log($(this).siblings('textarea').val());
+console.log('test');
 
   textNil.addNode({
     storyId: textNil.currentStory,
@@ -196,6 +186,7 @@ $(document).on('click', '.newPostSubmit', function(){
   },function(err, record){
     console.log('success');
   });
+
 });
 
 //------------------------------------------------------------------------------
