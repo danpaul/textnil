@@ -4,7 +4,6 @@ var controllersDir = __dirname + '/controllers';
 config = {}
 
 config.dbURI = 'mongodb://localhost:27017/textnil';
-config.test = 'test';
 
 config.models = {};
 config.models.author = modelsDir +  '/author';

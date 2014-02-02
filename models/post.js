@@ -2,6 +2,8 @@
 // require/setup
 //------------------------------------------------------------------------------
 
+// console.log('post');
+
 var mongoose = require('mongoose'),
 	_ = require('underscore'),
 	async = require('async');

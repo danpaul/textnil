@@ -29,6 +29,14 @@ app.set('view engine', 'ejs');
 
 app.locals.title = 'textNIL';
 
+
+app.all('*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
+
+
 /*
 	Takes a story id.
 	Returns an object two properties (`tree` and `data`). `tree` defines the
@@ -62,6 +70,18 @@ app.get('/api/post/find-one', function (req, res)
 	{
 		if(err){console.log(err);
 		}else{
+			res.send(record);
+		}
+	})
+});
+
+app.get('/api/post/:id', function (req, res)
+{
+	postController.findById(req.params.id, function(err, record)
+	{
+		if(err){console.log(err);
+		}else{
+			res.setHeader('Content-Type', 'application/json');
 			res.send(record);
 		}
 	})
