@@ -89,9 +89,6 @@ app.get('/api/post/:id', function (req, res)
 
 app.get('/api/posts', function (req, res)
 {
-
-console.log(req.query.ids);
-
 	postController.getPosts(req.query.ids, function(err, record)
 	{
 		if(err){console.log(err);
