@@ -87,6 +87,21 @@ app.get('/api/post/:id', function (req, res)
 	})
 });
 
+app.get('/api/posts', function (req, res)
+{
+
+console.log(req.query.ids);
+
+	postController.getPosts(req.query.ids, function(err, record)
+	{
+		if(err){console.log(err);
+		}else{
+			res.setHeader('Content-Type', 'application/json');
+			res.send(record);
+		}
+	})
+});
+
 app.post('/api/node', function (req, res)
 {
 	postNodeController.insertNewPost(req.body);
