@@ -14,6 +14,7 @@ config.models.story = modelsDir +  '/story';
 
 config.controllers = {};
 config.controllers.story = controllersDir + '/story';
+config.controllers.post = controllersDir + '/post';
 config.controllers.postNode = controllersDir + '/post_node';
 
 config.concurrencyLimit = 10;

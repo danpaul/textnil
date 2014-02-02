@@ -32,35 +32,27 @@
 // templates
 
 
+// textNil.postNodeTemplate = _.template(
+//     '<li>'+
+//       '<%= content %><br />'+
+//       '<i class="foundicon-plus"></i>' +
+//         '<div contenteditable="true" class="editable newPostInput hiddenInput"></div>' +
+//       '<a class="tiny button secondary newPostSubmit">submit</a>' +
+//     '</li>'
+//   );
+
 textNil.postNodeTemplate = _.template(
-    // '<li><i class="foundicon-plus"></i></li>' +
     '<li>'+
       '<%= content %><br />'+
       '<i class="foundicon-plus"></i>' +
-      // '<div class="newPostInput">' +
-      // '<div contenteditable="true">bar</div>' +
-        '<div contenteditable="true" class="editable newPostInput hiddenInput">test</div>' +
+        '<div class="editable newPostInput hiddenInput">' +
+          '<div class="input_div" contenteditable="true" ></div>' +
+          '<a class="small button secondary newPostSubmit">submit</a>' +
+        '</div>' +
       // '</div>' +
-      '<a class="tiny button secondary newPostSubmit">submit</a>' +
-      '<p>foo</p>' +      
-    '</li>' //+
-    //'<a class="tiny button secondary newPostSubmit">submit</a>'
-
+      // '<a class="tiny button secondary newPostSubmit">submit</a>' +
+    '</li>'
   );
-
-// textNil.postNodeTemplate = _.template(
-//     // '<li><i class="foundicon-plus"></i></li>' +
-//     '<li>'+
-//       'content: <%= content %><br />'+
-//       //'author:<%= author %><br />' +
-//       '<i class="foundicon-plus"></i>' +
-//       '<form class="newPostForm">' +
-//         '<input type="hidden" name="postNodeId" value="<%= postNodeId %>">' +
-//         '<textarea name="content" rows="10"></textarea>' +
-//         '<a class="tiny button secondary newPostSubmit">submit</a>' +
-//       '</form>' +
-//     '</li>'
-//   );
 
 //------------------------------------------------------------------------------
 // helpers
@@ -163,9 +155,6 @@ textNil.getPostTreeData = function(tree)
 
 $(document).on('click', '.foundicon-plus', function(){
   var inputDiv = $(this).siblings('.newPostInput');
-
-// console.log(inputDiv);
-
   if(inputDiv.is(':visible')){
     inputDiv.hide();
   }else{
@@ -174,10 +163,6 @@ $(document).on('click', '.foundicon-plus', function(){
 });
 
 $(document).on('click', '.newPostSubmit', function(){
-
-// console.log($(this).siblings('textarea').val());
-console.log('test');
-
   textNil.addNode({
     storyId: textNil.currentStory,
     author: textNil.author,
@@ -188,7 +173,7 @@ console.log('test');
   });
 
 });
-
+ 
 //------------------------------------------------------------------------------
 // routing
 
@@ -213,7 +198,6 @@ console.log('test');
     story: function(storyId)
     {
       textNil.getStoryRoot(storyId, function(results){
-//console.log(results);
         textNil.updatePostDictionary(results.data);
         var rootList = $('<ul class="disc">').appendTo('#story_root');
         textNil.buildStoryList(results.tree, rootList);

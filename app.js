@@ -17,6 +17,7 @@ var config = require('./config');
 var controller = config.controllers;
 var storyController = require(config.controllers.story);
 var postNodeController = require(config.controllers.postNode);
+var postController = require(config.controllers.post);
 
 mongoose.connect(config.dbURI);
 
@@ -53,6 +54,17 @@ app.get('/api/node/:id', function (req, res)
 			res.send(tree);
 		}
 	});
+});
+
+app.get('/api/post/find-one', function (req, res)
+{
+	postController.findOne(function(err, record)
+	{
+		if(err){console.log(err);
+		}else{
+			res.send(record);
+		}
+	})
 });
 
 app.post('/api/node', function (req, res)
