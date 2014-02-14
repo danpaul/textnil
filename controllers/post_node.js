@@ -33,3 +33,11 @@ var insertNewPost = exports.insertNewPost = function(nodeObject, callback)
 		}
 	});
 }
+
+var findById = exports.findById = function(id, callback){
+	PostNode.findById(id, callback);
+}
+
+var findPostNode = exports.findPostNode = function(callback){
+	PostNode.find({}, callback);
+}

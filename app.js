@@ -1,6 +1,6 @@
 /*
 
-	Note: main front-end app is in public/textnil.js
+	Note: main front-end app is in niltext repo
 
 */
 
@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
  	engine = require('ejs-locals');
 
 var app = exports.app = express();
+var textNil = require(__dirname + '/textNil');
 
 var config = require('./config');
 var controller = config.controllers;
@@ -33,6 +34,7 @@ app.locals.title = 'textNIL';
 app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.setHeader('Content-Type', 'application/json');
   next();
  });
 
@@ -44,60 +46,41 @@ app.all('*', function(req, res, next) {
 */
 app.get('/api/story/:id', function (req, res)
 {
-	storyController.getStoryTreeWithPosts(req.params.id, function(err, tree)
-	{
-		if(err){console.log(err);
-		}else{
-			res.send(tree);
-		}
-	});
+	storyController.getStoryTreeWithPosts(req.params.id, textNil.responseCallback(res));
 });
 
 app.get('/api/node/:id', function (req, res)
 {
-	storyController.getTreeFromPostId(req.params.id, function(err, tree)
-	{
-		if(err){console.log(err);
-		}else{
-			res.send(tree);
-		}
-	});
+	storyController.getTreeFromPostId(req.params.id, textNil.responseCallback(res));
 });
 
 app.get('/api/post/find-one', function (req, res)
 {
-	postController.findOne(function(err, record)
-	{
-		if(err){console.log(err);
-		}else{
-			res.send(record);
-		}
-	})
+	postController.findOne(textNil.responseCallback(res));
 });
 
 app.get('/api/post/:id', function (req, res)
 {
-	postController.findById(req.params.id, function(err, record)
-	{
-		if(err){console.log(err);
-		}else{
-			res.setHeader('Content-Type', 'application/json');
-			res.send(record);
-		}
-	})
+	postController.findById(req.params.id, textNil.responseCallback(res));
 });
 
 app.get('/api/posts', function (req, res)
 {
-	postController.getPosts(req.query.ids, function(err, record)
-	{
-		if(err){console.log(err);
-		}else{
-			res.setHeader('Content-Type', 'application/json');
-			res.send(record);
-		}
-	})
+	postController.getPosts(req.query.ids, textNil.responseCallback(res));
 });
+
+app.get('/api/post-node/:id', function (req, res)
+{
+	postNodeController.findById(req.params.id, textNil.responseCallback(res));
+});
+
+app.get('/api/post-nodes', function (req, res)
+{
+	postNodeController.findPostNode(textNil.responseCallback(res));
+});
+
+
+
 
 app.post('/api/node', function (req, res)
 {
