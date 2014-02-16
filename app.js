@@ -44,6 +44,21 @@ app.get('/api/test', function (req, res)
 	res.send('foo');
 });
 
+app.get('/api/story/find', function (req, res)
+{
+	storyController.find(textNil.responseCallback(res));
+});
+
+app.get('/api/story/find-by-id/:id', function (req, res)
+{
+// console.log(req.query);
+	storyController.findById(req.params.id, textNil.responseCallback(res));
+});
+
+app.get('/api/story/find-one', function (req, res)
+{
+	storyController.findOne(textNil.responseCallback(res));
+});
 /*
 	Takes a story id.
 	Returns an object two properties (`tree` and `data`). `tree` defines the
@@ -88,10 +103,6 @@ app.get('/api/post-node/:id', function (req, res)
 app.get('/api/post-nodes', function (req, res)
 {
 	postNodeController.getPostNodes(req.query.ids, textNil.responseCallback(res));
-
-// res.send('foo');
-// console.log(req.query.ids)
-	// postNodeController.findPostNode(textNil.responseCallback(res));
 });
 
 

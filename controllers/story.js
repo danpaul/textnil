@@ -5,6 +5,20 @@ var Story = require(config.models.story).model;
 var Post = require(config.models.post).model;
 var PostNode = require(config.models.postNode).model;
 
+
+
+var find = exports.find = function(callback){
+	Story.find({}, callback);
+}
+
+var findById = exports.findById = function(id, callback){
+	Story.findById(id, callback);
+}
+
+var findOne = exports.findOne = function(callback){
+	Story.findOne(callback);
+}
+
 /*
 	Builds a tree of postNodes starting from story's root to depth specified in 
 		`config.defaultsearchDepth`. Passes result to `callback(err, record)`.
