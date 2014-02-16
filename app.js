@@ -39,6 +39,11 @@ app.all('*', function(req, res, next) {
  });
 
 
+app.get('/api/test', function (req, res)
+{
+	res.send('foo');
+});
+
 /*
 	Takes a story id.
 	Returns an object two properties (`tree` and `data`). `tree` defines the
@@ -69,6 +74,12 @@ app.get('/api/posts', function (req, res)
 	postController.getPosts(req.query.ids, textNil.responseCallback(res));
 });
 
+app.get('/api/post-node/find', function (req, res)
+{
+	postNodeController.find(textNil.responseCallback(res));
+});
+
+//51ff071a34c070a644000005
 app.get('/api/post-node/:id', function (req, res)
 {
 	postNodeController.findById(req.params.id, textNil.responseCallback(res));
@@ -76,7 +87,11 @@ app.get('/api/post-node/:id', function (req, res)
 
 app.get('/api/post-nodes', function (req, res)
 {
-	postNodeController.findPostNode(textNil.responseCallback(res));
+	postNodeController.getPostNodes(req.query.ids, textNil.responseCallback(res));
+
+// res.send('foo');
+// console.log(req.query.ids)
+	// postNodeController.findPostNode(textNil.responseCallback(res));
 });
 
 

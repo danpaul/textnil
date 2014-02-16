@@ -34,10 +34,24 @@ var insertNewPost = exports.insertNewPost = function(nodeObject, callback)
 	});
 }
 
+var find = exports.find = function(callback){
+	PostNode.find({}, callback);
+}
+
+var findOne = exports.findOne = function(callback)
+{
+	PostNode.findOne({}, callback);
+}
+
 var findById = exports.findById = function(id, callback){
 	PostNode.findById(id, callback);
 }
 
 var findPostNode = exports.findPostNode = function(callback){
 	PostNode.find({}, callback);
+}
+
+var getPostNodes = exports.getPostNodes = function(ids, callback){
+	PostNode.find({'_id':{ $in: ids }}, callback);
+	// PostNode.find({}, callback);
 }
