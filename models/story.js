@@ -83,7 +83,6 @@ function makeTreeNode(node)
 	If 3 arguments are passed, the second argument will be the depth. If only 2 are 
 		passed, the depth specified in the `config.js` will be searched.   
 */
-
 var buildTree = storySchema.statics.buildTree = storySchema.methods.buildTree = function(startNode, callback)
 {
 	var self = this;

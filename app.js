@@ -100,6 +100,10 @@ app.get('/api/post-node/:id', function (req, res)
 	postNodeController.findById(req.params.id, textNil.responseCallback(res));
 });
 
+app.get('/api/post-node-children/:id', function(req, res){
+	postNodeController.getChildren(req.params.id, textNil.responseCallback(res));
+});
+
 app.get('/api/post-nodes', function (req, res)
 {
 	postNodeController.getPostNodes(req.query.ids, textNil.responseCallback(res));

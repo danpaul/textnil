@@ -53,5 +53,8 @@ var findPostNode = exports.findPostNode = function(callback){
 
 var getPostNodes = exports.getPostNodes = function(ids, callback){
 	PostNode.find({'_id':{ $in: ids }}, callback);
-	// PostNode.find({}, callback);
+}
+
+var getPostNodeChildren = exports.getChildren = function(parentId, callback){
+	PostNode.find({parent: parentId}, callback);
 }
